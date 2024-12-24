@@ -1,15 +1,13 @@
 {
-  "name": "typescript-nextjs-starter",
-  "description": "A TypeScript starter for Next.js that includes all you need to build amazing projects",
-  "version": "1.0.0",
+  "name": "pongp",
+  "description": "What an app",
+  "version": "0.0.1",
   "private": true,
   "type": "module",
-  "author": "João Pedro Schmitz (@jpedroschmitz)",
+  "author": "Oskari Kosonen",
   "license": "MIT",
   "keywords": [
-    "nextjs",
-    "starter",
-    "typescript"
+    "pongo"
   ],
   "scripts": {
     "dev": "next dev --turbopack",
@@ -45,8 +43,8 @@
     "@types/node": "22.10.2",
     "@types/react": "19.0.2",
     "@types/react-dom": "19.0.2",
-    "@typescript-eslint/eslint-plugin": "8.18.1",
-    "@typescript-eslint/parser": "8.18.1",
+    "@typescript-eslint/eslint-plugin": "8.18.2",
+    "@typescript-eslint/parser": "8.18.2",
     "eslint": "9.17.0",
     "eslint-config-next": "15.1.2",
     "eslint-config-prettier": "9.1.0",
