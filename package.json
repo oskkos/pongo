@@ -1,5 +1,5 @@
 {
-  "name": "pongp",
+  "name": "pongo",
   "description": "What an app",
   "version": "0.0.1",
   "private": true,
@@ -19,7 +19,8 @@
     "format": "prettier . --write",
     "format:check": "prettier . --check",
     "format:ci": "prettier --list-different .",
-    "postinstall": "husky"
+    "postinstall": "husky",
+    "seed": "node prisma/seed.js"
   },
   "lint-staged": {
     "./src/**/*.{ts,js,jsx,tsx}": [
