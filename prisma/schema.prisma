@@ -1,0 +1,49 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Apartment {
+  id            String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  apartmentSize Int      @map("apartment_size")
+  createdAt     DateTime @default(now()) @map("created_at")
+  description   String
+  modifiedAt    DateTime @updatedAt @map("modified_at")
+  postalCode    String   @map("postal_code")
+  postOffice    String   @map("post_office")
+  streetAddress String   @map("street_address")
+  tenants       Tenant[]
+  title         String
+
+  @@map("apartments")
+}
+
+model Tenant {
+  id              String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  apartment       Apartment @relation(fields: [apartmentId], references: [id])
+  apartmentId     String    @map("apartment_id") @db.Uuid
+  createdAt       DateTime  @default(now()) @map("created_at")
+  deposit         Int
+  depositPaid     Boolean   @map("deposit_paid")
+  depositReturned Boolean   @map("deposit_returned")
+  email           String
+  firstName       String    @map("first_name")
+  lastName        String    @map("last_name")
+  modifiedAt      DateTime  @updatedAt @map("modified_at")
+  personId        String    @map("person_id")
+  phoneNumber     String    @map("phone_number")
+  tenantFrom      DateTime  @map("tenant_from")
+  tenantTo        DateTime? @map("tenant_to")
+
+  @@map("tenants")
+}
