@@ -1,6 +1,6 @@
-import { PrismaClient } from '@prisma/client';
+import slugify from 'slugify';
 
-const prisma = new PrismaClient();
+import { prisma } from './prisma';
 
 async function main() {
   for (let i = 1; i <= 5; i++) {
@@ -12,6 +12,7 @@ async function main() {
         postOffice: `Post Office ${i}`,
         streetAddress: `Street Address ${i}`,
         title: `Apartment ${i}`,
+        slug: slugify(`Streaet Äddress ${i}`, { lower: true }),
         tenants: {
           create: Array.from({ length: 5 }, (_, j) => ({
             personId: `person${i}${j}`,

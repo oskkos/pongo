@@ -20,7 +20,7 @@
     "format:check": "prettier . --check",
     "format:ci": "prettier --list-different .",
     "postinstall": "husky",
-    "seed": "node prisma/seed.js"
+    "seed": "tsx prisma/seed.ts"
   },
   "lint-staged": {
     "./src/**/*.{ts,js,jsx,tsx}": [
@@ -56,6 +56,8 @@
     "prettier": "3.4.2",
     "prettier-plugin-sort-json": "4.0.0",
     "prisma": "6.1.0",
+    "slugify": "1.6.6",
+    "tsx": "4.19.2",
     "typescript": "5.7.2"
   }
 }
