@@ -7,7 +7,7 @@ export default async function Home() {
   return (
     <main>
       <div>
-        <h1>Welcome to Pongo!</h1>
+        <h1 className="text-3xl font-bold underline">Welcome to Pongo!</h1>
         <Image src="/pongo.svg" alt="Pongo" width={256} height={256} priority />
         {apartments.map((apartment) => {
           return (
