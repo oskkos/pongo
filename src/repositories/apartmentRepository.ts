@@ -2,9 +2,7 @@ import 'server-only';
 
 import { prisma } from 'prisma/prisma';
 
-import { Apartment } from '@/models';
-
-export function getAllApartments(): Promise<Apartment[]> {
+export function getAllApartments() {
   return prisma.apartment.findMany({
     include: {
       tenants: true,

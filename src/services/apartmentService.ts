@@ -1,8 +1,7 @@
 import 'server-only';
 
-import { Apartment } from '@/models';
 import * as apartmentRepository from '@/repositories/apartmentRepository';
 
-export function getAllApartments(): Promise<Apartment[]> {
+export function getAllApartments() {
   return apartmentRepository.getAllApartments();
 }
