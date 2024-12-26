@@ -3,8 +3,8 @@ import { MdHouse } from 'react-icons/md';
 
 export default function ApartmentCard({ apartment }: { apartment: Apartment }) {
   return (
-    <div className="card bg-neutral text-neutral-content w-96 shadow-xl my-4">
-      <figure className="w-96 h-36">
+    <div className="card bg-neutral text-neutral-content w-72 shadow-xl my-4">
+      <figure className="w-full h-36">
         <MdHouse size={84} />
       </figure>
       <div className="card-body">
