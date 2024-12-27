@@ -25,7 +25,7 @@ export const AddNewApartmentSchema: ZodType<AddNewApartmentData> = z.object({
   postalCode: z.string().regex(/^\d{5}$/),
   postOffice: z.string().min(1),
   streetAddress: z.string().min(1),
-  title: z.string().min(1).nullable(),
+  title: z.string().min(1),
 });
 
 export const AddNewApartmentSchemaResolver = zodResolver(AddNewApartmentSchema);
