@@ -1,7 +1,9 @@
 'use client';
 
+import { Dispatch, SetStateAction, useEffect, useState } from 'react';
 import { FieldError, FieldErrors, useForm, UseFormRegister } from 'react-hook-form';
 
+import { addNewApartment } from '@/actions';
 import { i18n } from '@/lib/i18n';
 import { AddNewApartmentData, AddNewApartmentSchemaResolver } from '@/schemas/addNewApartmentSchema';
 
@@ -57,7 +59,28 @@ function Textarea({
   );
 }
 
-function onSubmit(data: AddNewApartmentData) {
+async function onSubmit(
+  data: AddNewApartmentData,
+  setToast: Dispatch<
+    SetStateAction<{
+      visible: boolean;
+      message: string;
+      type: string;
+    }>
+  >
+) {
+  try {
+    const ret = await addNewApartment(data);
+    if (ret.status === 'success') {
+      setToast({ visible: true, message: 'i18n.ApartmentAdded', type: 'alert-success' });
+    } else {
+      console.log(ret.error);
+      setToast({ visible: true, message: ret.error, type: 'alert-error' });
+    }
+  } catch (error) {
+    console.error(error);
+    setToast({ visible: true, message: 'i18n.error', type: 'alert-error' });
+  }
   console.log('Form data', data);
 }
 function onError(errors: FieldErrors<AddNewApartmentData>) {
@@ -74,9 +97,25 @@ export default function AddNewApartment() {
     resolver: AddNewApartmentSchemaResolver,
   });
 
+  const [toast, setToast] = useState({ visible: false, message: '', type: '' });
+  useEffect(() => {
+    if (toast.visible) {
+      const timer = setTimeout(() => {
+        setToast({ visible: false, message: '', type: '' });
+      }, 3000);
+      return () => clearTimeout(timer);
+    }
+  }, [toast.visible]);
   return (
     <div className="flex justify-center items-center">
-      <form className="flex flex-col" onSubmit={handleSubmit(onSubmit, onError)}>
+      {toast.visible && (
+        <div className="toast">
+          <div className={`alert ${toast.type}`}>
+            <span>{toast.message}</span>
+          </div>
+        </div>
+      )}
+      <form className="flex flex-col" onSubmit={handleSubmit((data) => onSubmit(data, setToast), onError)}>
         <Input label={i18n.Title} name="title" register={register} error={errors.title} />
         <Textarea label={i18n.Description} name="description" register={register} error={errors.description} />
         <Input
