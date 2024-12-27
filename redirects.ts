@@ -6,4 +6,9 @@ export const redirects: Redirect[] = [
     destination: '/',
     permanent: true,
   },
+  {
+    source: '/apartments',
+    destination: '/',
+    permanent: true,
+  },
 ];
