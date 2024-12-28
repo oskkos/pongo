@@ -3,7 +3,12 @@ import { Metadata } from 'next';
 import './globals.css';
 
 import { Inter } from 'next/font/google';
+import Link from 'next/link';
 import { GiMonkey } from 'react-icons/gi';
+import { MdHouse } from 'react-icons/md';
+
+import { i18n } from '@/lib/i18n';
+import { BottomNavAction, TopNavAction } from './navbarButtons';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -17,66 +22,35 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="en">
       <body className={inter.className}>
         <div className="navbar sticky top-0 z-50 bg-base-300">
-          <div className="text-2xl font-bold">
+          <Link href="/" className="text-2xl font-bold">
             <GiMonkey size={40} className="mr-2" />
             <span>pongo</span>
+          </Link>
+
+          <div className="hidden md:inline-flex ml-8 inline-flex gap-2">
+            <TopNavAction path="/dummy" label={'Dummy'}>
+              <MdHouse size={24} />
+            </TopNavAction>
+            <TopNavAction path="/apartments" label={i18n.Apartments}>
+              <MdHouse size={24} />
+            </TopNavAction>
+            <TopNavAction path="/foobar" label={'Foobar'}>
+              <MdHouse size={24} />
+            </TopNavAction>
           </div>
         </div>
-
         <main className="container mx-auto pb-16 md:pb-0">{children}</main>
 
         <div className="btm-nav visible md:invisible">
-          <button>
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              className="h-5 w-5"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth="2"
-                d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"
-              />
-            </svg>
-            <span className="btm-nav-label">Home</span>
-          </button>
-          <button className="active">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              className="h-5 w-5"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth="2"
-                d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-              />
-            </svg>
-            <span className="btm-nav-label">Warnings</span>
-          </button>
-          <button>
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              className="h-5 w-5"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth="2"
-                d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"
-              />
-            </svg>
-            <span className="btm-nav-label">Statics</span>
-          </button>
+          <BottomNavAction path="/dummy" label={'Dummy'}>
+            <MdHouse size={24} />
+          </BottomNavAction>
+          <BottomNavAction path="/apartments" label={i18n.Apartments}>
+            <MdHouse size={24} />
+          </BottomNavAction>
+          <BottomNavAction path="/foobar" label={'Foobar'}>
+            <MdHouse size={24} />
+          </BottomNavAction>
         </div>
       </body>
     </html>

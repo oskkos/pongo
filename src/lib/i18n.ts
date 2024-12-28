@@ -1,6 +1,7 @@
 export const i18n = {
   AddNewApartment: 'Add New Apartment',
   ApartmentAdded: 'Apartment added',
+  Apartments: 'Apartments',
   ApartmentSize: 'Apartment size',
   Description: 'Description',
   Error: 'Oops, we faced an error',

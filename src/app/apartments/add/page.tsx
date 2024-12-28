@@ -58,7 +58,7 @@ export default function AddNewApartment() {
   return (
     <div className="flex justify-center items-center">
       {toast.visible && (
-        <div className="toast">
+        <div className="toast z-50">
           <div className={`alert ${toast.type}`}>
             <span>{toast.message}</span>
           </div>
