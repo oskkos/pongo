@@ -7,10 +7,8 @@ import * as apartmentService from '@/services/apartmentService';
 import { AddNewApartmentData, AddNewApartmentDataFields, AddNewApartmentSchema } from './schemas/addNewApartmentSchema';
 
 function handleZodErrors<T extends FieldValues>(errors: ZodIssue[], knwonFields: { [k: string]: Path<T> }) {
-  console.log('Errors', errors);
   return errors.reduce(
     (acc, issue) => {
-      console.log(issue);
       const path = issue.path[0];
       if (!path || !knwonFields[path]) {
         return acc;
