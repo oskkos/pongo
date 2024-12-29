@@ -1,10 +1,12 @@
+import slugify from 'slugify';
+
 import CoverPhotoUploader from '@/app/apartments/[slug]/coverPhotoUploader';
 import Image from '@/components/image';
 import { getApartmentBySlug } from '@/services/apartmentService';
 import ApartmentDetails from './apartmentDetails';
 
 export default async function Apartment({ params }: { params: Promise<{ slug: string }> }) {
-  const slug = (await params).slug;
+  const slug = slugify((await params).slug, { lower: true });
   const apartment = await getApartmentBySlug(slug);
   if (!apartment) {
     return <div>Apartment not found</div>;
