@@ -17,6 +17,7 @@ model Apartment {
   id            String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   apartmentSize Int      @map("apartment_size")
   createdAt     DateTime @default(now()) @map("created_at")
+  coverImageId  String?  @map("cover_image_id")
   description   String?
   modifiedAt    DateTime @updatedAt @map("modified_at")
   postalCode    String   @map("postal_code")

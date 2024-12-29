@@ -10,7 +10,7 @@ export default function ApartmentCard({ apartment }: { apartment: Apartment }) {
         <figure className="w-full h-36">
           <Image
             alt="sample"
-            src="sample"
+            src={apartment.coverImageId ?? 'pongo'}
             width="300"
             height="150"
             crop={{

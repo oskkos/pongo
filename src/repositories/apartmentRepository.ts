@@ -13,8 +13,14 @@ export function getApartmentBySlug(slug: string) {
     where: { slug },
   });
 }
-export function addNewApartment(data: Omit<Apartment, 'id' | 'createdAt' | 'modifiedAt'>) {
+export function addNewApartment(data: Omit<Apartment, 'id' | 'createdAt' | 'modifiedAt' | 'coverImageId'>) {
   return prisma.apartment.create({
+    data,
+  });
+}
+export function updateApartment(slug: string, data: Partial<Apartment>) {
+  return prisma.apartment.update({
+    where: { slug },
     data,
   });
 }
