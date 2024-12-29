@@ -3,6 +3,7 @@ CREATE TABLE "apartments" (
     "id" UUID NOT NULL DEFAULT gen_random_uuid(),
     "apartment_size" INTEGER NOT NULL,
     "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "cover_image_id" TEXT,
     "description" TEXT,
     "modified_at" TIMESTAMP(3) NOT NULL,
     "postal_code" TEXT NOT NULL,
