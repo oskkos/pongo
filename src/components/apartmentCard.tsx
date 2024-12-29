@@ -9,21 +9,19 @@ export default function ApartmentCard({ apartment }: { apartment: Apartment }) {
       <div className="card bg-neutral text-neutral-content w-72 shadow-xl my-4">
         <figure className="w-full h-36">
           <Image
-            alt="sample"
+            alt={apartment.streetAddress}
             src={apartment.coverImageId ?? 'pongo'}
             width="300"
             height="150"
             crop={{
-              type: 'auto',
+              type: 'fill',
             }}
           />
         </figure>
-        <div className="card-body">
+        <div className="card-body p-4">
           <h2 className="card-title">{apartment.streetAddress}</h2>
-          <p>
-            {apartment.title}
-            <br /> {apartment.description}
-          </p>
+          <div>{apartment.title}</div>
+          <div className="h-6 overflow-hidden text-nowrap text-ellipsis"> {apartment.description}</div>
         </div>
       </div>
     </Link>
