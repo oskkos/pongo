@@ -3,7 +3,7 @@ import { MdEdit } from 'react-icons/md';
 
 export default function ApartmentDetails({ apartment }: { apartment: Apartment }) {
   return (
-    <div className="absolute top-0 left-0 bg-base-300 text-base-content opacity-75 max-w-prose p-4 m-4 rounded-lg shadow-xl">
+    <div className="absolute top-0 left-0 bg-base-300 text-base-content opacity-75 max-w-prose p-3 m-3 md:p-4 md:m-4 rounded-lg shadow-xl">
       <div className="inline-flex justify-between items-end w-full">
         <div className="text-xl md:text-2xl font-bold">{apartment.streetAddress}</div>
         <div className="pl-8 pr-0">
