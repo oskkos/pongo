@@ -49,13 +49,16 @@ export async function addNewApartment(data: AddNewApartmentData) {
   redirect(`/apartments/${apartment.slug}`);
 }
 
-export async function setCoverPhoto(data: FormData) {
-  const slug = data.get('slug') as string;
-  const coverPhoto = data.get('coverPhoto') as File;
-  if (!coverPhoto || !slug) {
-    throw new Error('Slug and cover photo are required');
+export async function setCoverPhoto(slug: string, coverPhoto: File) {
+  try {
+    if (!coverPhoto || !slug) {
+      throw new Error('Slug and cover photo are required');
+    }
+    apartmentService.setCoverPhoto(coverPhoto, slug);
+    return { status: 'success' } as const;
+  } catch (error) {
+    return { status: 'error', error: handleError(error) } as const;
   }
-  apartmentService.setCoverPhoto(coverPhoto, slug);
 
   revalidatePath(`/apartments/${slug}`);
   revalidatePath(`/apartments`);
