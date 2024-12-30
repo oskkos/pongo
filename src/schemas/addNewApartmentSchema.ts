@@ -5,6 +5,7 @@ import type { ZodType } from 'zod';
 
 export interface AddNewApartmentData {
   apartmentSize: number;
+  coverPhoto?: FileList | null;
   description: string | null;
   postalCode: string;
   postOffice: string;
@@ -13,6 +14,7 @@ export interface AddNewApartmentData {
 }
 export const AddNewApartmentDataFields: Record<string, keyof AddNewApartmentData> = {
   apartmentSize: 'apartmentSize',
+  coverPhoto: 'coverPhoto',
   description: 'description',
   postalCode: 'postalCode',
   postOffice: 'postOffice',
@@ -21,6 +23,7 @@ export const AddNewApartmentDataFields: Record<string, keyof AddNewApartmentData
 };
 export const AddNewApartmentSchema: ZodType<AddNewApartmentData> = z.object({
   apartmentSize: z.coerce.number().positive().int(),
+  coverPhoto: z.any().optional(),
   description: z.string(),
   postalCode: z.string().regex(/^\d{5}$/),
   postOffice: z.string().min(1),

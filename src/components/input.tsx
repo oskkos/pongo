@@ -8,12 +8,14 @@ export default function Input<T extends FieldValues>({
   register,
   type,
   error,
+  className,
 }: {
   label: string;
   name: Path<T>;
   register: UseFormRegister<T>;
   type?: string;
   error?: FieldError;
+  className?: string;
 }) {
   return (
     <>
@@ -22,7 +24,7 @@ export default function Input<T extends FieldValues>({
         {...register(name)}
         placeholder={label}
         type={type ?? 'text'}
-        className="input input-bordered w-full max-w-xs"
+        className={`${className ?? 'input input-bordered w-full max-w-xs'}`}
       />
       <FormFieldError error={error} />
     </>

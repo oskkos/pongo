@@ -17,10 +17,12 @@ interface ToastData {
 
 async function onSubmit(data: AddNewApartmentData, setToast: Dispatch<SetStateAction<ToastData>>) {
   try {
+    console.log(data.coverPhoto);
     const ret = await addNewApartment(data);
 
-    // addNewApartment redirects on success, so if get to here error occurred
-    setToast({ visible: true, message: ret.error, type: 'alert-error' });
+    if (ret?.status === 'error') {
+      setToast({ visible: true, message: ret.error, type: 'alert-error' });
+    }
 
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
   } catch (e) {
@@ -76,6 +78,15 @@ export default function AddNewApartment() {
         <Input label={i18n.StreetAddress} name="streetAddress" register={register} error={errors.streetAddress} />
         <Input label={i18n.PostalCode} name="postalCode" register={register} error={errors.postalCode} />
         <Input label={i18n.PostOffice} name="postOffice" register={register} error={errors.postOffice} />
+
+        <Input
+          label={i18n.CoverPhoto}
+          name="coverPhoto"
+          register={register}
+          error={errors.coverPhoto}
+          type="file"
+          className="file-input file-input-bordered w-full max-w-xs"
+        />
 
         <button className="btn btn-primary mt-2" type="submit">
           {i18n.Submit}

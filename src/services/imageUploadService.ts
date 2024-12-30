@@ -3,6 +3,7 @@ import 'server-only';
 import cloudinary from 'cloudinary';
 
 export async function uploadImage(file: File, slug: string) {
+  console.log('uploading image', file);
   const imageBuffer = Buffer.from(await file.arrayBuffer());
   const uploadResult: cloudinary.UploadApiResponse | undefined = await new Promise((resolve) => {
     cloudinary.v2.uploader
