@@ -1,5 +1,7 @@
 'use server';
 
+import { revalidatePath } from 'next/cache';
+import { redirect } from 'next/navigation';
 import { FieldValues, Path } from 'react-hook-form';
 import { ZodError, ZodIssue } from 'zod';
 
@@ -28,18 +30,23 @@ function handleError(error: unknown) {
   }
   return String(error);
 }
+
 export async function getAllApartments() {
   return apartmentService.getAllApartments();
 }
 
 export async function addNewApartment(data: AddNewApartmentData) {
+  let apartment;
   try {
     const result = AddNewApartmentSchema.parse(data);
-    await apartmentService.addNewApartment(result);
-    return { status: 'success' } as const;
+    apartment = await apartmentService.addNewApartment(result);
   } catch (error) {
     return { status: 'error', error: handleError(error) } as const;
   }
+
+  revalidatePath(`/apartments/${apartment.slug}`);
+  revalidatePath(`/apartments`);
+  redirect(`/apartments/${apartment.slug}`);
 }
 
 export async function setCoverPhoto(data: FormData) {
@@ -49,4 +56,7 @@ export async function setCoverPhoto(data: FormData) {
     throw new Error('Slug and cover photo are required');
   }
   apartmentService.setCoverPhoto(coverPhoto, slug);
+
+  revalidatePath(`/apartments/${slug}`);
+  revalidatePath(`/apartments`);
 }

@@ -18,11 +18,10 @@ interface ToastData {
 async function onSubmit(data: AddNewApartmentData, setToast: Dispatch<SetStateAction<ToastData>>) {
   try {
     const ret = await addNewApartment(data);
-    if (ret.status === 'success') {
-      setToast({ visible: true, message: i18n.ApartmentAdded, type: 'alert-success' });
-    } else {
-      setToast({ visible: true, message: ret.error, type: 'alert-error' });
-    }
+
+    // addNewApartment redirects on success, so if get to here error occurred
+    setToast({ visible: true, message: ret.error, type: 'alert-error' });
+
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
   } catch (e) {
     setToast({ visible: true, message: i18n.Error, type: 'alert-error' });
