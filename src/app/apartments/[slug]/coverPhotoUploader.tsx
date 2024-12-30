@@ -10,7 +10,7 @@ async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
   console.log('updating the photo', slug, coverPhoto);
   const result = await setCoverPhoto(slug, coverPhoto);
   if (result.status === 'error') {
-    alert(result.error);
+    alert(result.error); // todo: toast
   }
 }
 

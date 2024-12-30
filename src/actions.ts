@@ -54,12 +54,12 @@ export async function setCoverPhoto(slug: string, coverPhoto: File) {
     if (!coverPhoto || !slug) {
       throw new Error('Slug and cover photo are required');
     }
-    apartmentService.setCoverPhoto(coverPhoto, slug);
-    return { status: 'success' } as const;
+    await apartmentService.setCoverPhoto(coverPhoto, slug);
   } catch (error) {
     return { status: 'error', error: handleError(error) } as const;
   }
 
   revalidatePath(`/apartments/${slug}`);
   revalidatePath(`/apartments`);
+  return { status: 'success' } as const;
 }
