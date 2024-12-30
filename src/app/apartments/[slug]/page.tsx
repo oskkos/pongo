@@ -1,12 +1,13 @@
-import slugify from 'slugify';
-
 import CoverPhotoUploader from '@/app/apartments/[slug]/coverPhotoUploader';
 import Image from '@/components/image';
+import { transformToSlug } from '@/lib/slugify';
 import { getApartmentBySlug } from '@/services/apartmentService';
 import ApartmentDetails from './apartmentDetails';
 
+export const dynamic = 'force-dynamic';
+
 export default async function Apartment({ params }: { params: Promise<{ slug: string }> }) {
-  const slug = slugify((await params).slug, { lower: true });
+  const slug = transformToSlug((await params).slug);
   const apartment = await getApartmentBySlug(slug);
   if (!apartment) {
     return <div>Apartment not found</div>;

@@ -9,7 +9,7 @@ export default async function Apartments() {
       <div>
         <AddNewApartmentBtn />
       </div>
-      <div className="inline-flex flex-wrap gap-4 items-center justify-center md:justify-between">
+      <div className="inline-flex flex-wrap gap-4 items-center justify-center md:justify-start">
         {apartments.map((apartment) => {
           return <ApartmentCard key={apartment.id} apartment={apartment} />;
         })}
