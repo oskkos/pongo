@@ -23,6 +23,7 @@ export default async function Apartment({ params }: { params: Promise<{ slug: st
           type: 'fill',
         }}
         className="max-h-96 xl:max-h-[512px] object-cover"
+        priority
       />
       <ApartmentDetails apartment={apartment} />
     </div>

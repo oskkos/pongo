@@ -5,7 +5,7 @@ import './globals.css';
 import { Inter } from 'next/font/google';
 import Link from 'next/link';
 import { GiMonkey } from 'react-icons/gi';
-import { MdHouse } from 'react-icons/md';
+import { MdHouse, MdPerson } from 'react-icons/md';
 
 import { i18n } from '@/lib/i18n';
 import { BottomNavAction, TopNavAction } from './navbarButtons';
@@ -16,6 +16,11 @@ export const metadata: Metadata = {
   title: `Pongo`,
   description: `What an app`,
 };
+
+const actions = [
+  { path: '/apartments', label: i18n.Apartments, icon: <MdHouse size={24} /> },
+  { path: '/tenants', label: i18n.Tenants, icon: <MdPerson size={24} /> },
+] as const;
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
@@ -28,29 +33,21 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           </Link>
 
           <div className="hidden md:inline-flex ml-8 inline-flex gap-2">
-            <TopNavAction path="/dummy" label={'Dummy'}>
-              <MdHouse size={24} />
-            </TopNavAction>
-            <TopNavAction path="/apartments" label={i18n.Apartments}>
-              <MdHouse size={24} />
-            </TopNavAction>
-            <TopNavAction path="/foobar" label={'Foobar'}>
-              <MdHouse size={24} />
-            </TopNavAction>
+            {actions.map(({ path, label, icon }) => (
+              <TopNavAction key={path} path={path} label={label}>
+                {icon}
+              </TopNavAction>
+            ))}
           </div>
         </div>
         <main className="container mx-auto pb-16 md:pb-0">{children}</main>
 
         <div className="btm-nav visible md:invisible">
-          <BottomNavAction path="/dummy" label={'Dummy'}>
-            <MdHouse size={24} />
-          </BottomNavAction>
-          <BottomNavAction path="/apartments" label={i18n.Apartments}>
-            <MdHouse size={24} />
-          </BottomNavAction>
-          <BottomNavAction path="/foobar" label={'Foobar'}>
-            <MdHouse size={24} />
-          </BottomNavAction>
+          {actions.map(({ path, label, icon }) => (
+            <BottomNavAction key={path} path={path} label={label}>
+              {icon}
+            </BottomNavAction>
+          ))}
         </div>
       </body>
     </html>

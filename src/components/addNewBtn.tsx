@@ -3,9 +3,8 @@
 import { useRouter } from 'next/navigation';
 
 import Fab from '@/components/fab';
-import { i18n } from '@/lib/i18n';
 
-export default function AddNewApartmentBtn() {
+export default function AddNewBtn({ label, path }: { label: string; path: string }) {
   const router = useRouter();
   return (
     <>
@@ -13,12 +12,12 @@ export default function AddNewApartmentBtn() {
       <button
         type="button"
         className="btn btn-neutral mt-4 hidden md:flex col-span-1 md:col-span-2 lg:col-span-3 xl:col-span-4"
-        onClick={() => router.push('/apartments/add')}
+        onClick={() => router.push(path)}
       >
-        {i18n.AddNewApartment}
+        {label}
       </button>
       {/* Fab is visible for small screen size */}
-      <div className="visible md:hidden" onClick={() => router.push('/apartments/add')}>
+      <div className="visible md:hidden" onClick={() => router.push(path)}>
         <Fab />
       </div>
     </>
