@@ -26,7 +26,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="en">
       <body className={inter.className}>
-        <div className="navbar sticky top-0 z-50 bg-base-300">
+        <div className="navbar md:sticky top-0 z-50 bg-base-300">
           <Link href="/" className="text-2xl font-bold">
             <GiMonkey size={40} className="mr-2" />
             <span>pongo</span>

@@ -12,13 +12,6 @@ interface SortType {
   direction: 'asc' | 'desc';
 }
 
-function handleResize(setTableHeight: (value: SetStateAction<string>) => void) {
-  if (window.innerWidth < 768) {
-    setTableHeight('calc(100dvh - 8rem)');
-  } else {
-    setTableHeight('calc(100dvh - 4rem)');
-  }
-}
 function updateSort(property: SortType['property'], setSort: (value: SetStateAction<SortType>) => void) {
   setSort((prev) => {
     if (prev.property === property) {
@@ -54,28 +47,16 @@ function sortTenants(tenants: TenantType[], sort: SortType) {
 }
 
 export default function TenantTable({ tenants }: { tenants: TenantType[] }) {
-  const [tableHeight, setTableHeight] = useState('calc(100dvh - 4rem)');
   const [sort, setSort] = useState({ property: 'tenantFrom', direction: 'desc' } as SortType);
   const [sortedTenants, setSortedTenants] = useState<TenantType[]>(tenants);
 
-  useEffect(() => {
-    const callback = handleResize.bind(null, setTableHeight);
-    window.addEventListener('resize', callback);
-    handleResize(setTableHeight);
-    return () => window.removeEventListener('resize', callback);
-  }, []);
   useEffect(() => {
     sortTenants(tenants, sort);
     setSortedTenants([...tenants]);
   }, [sort, tenants]);
 
   return (
-    <div
-      className="overflow-x-auto"
-      style={{
-        height: tableHeight,
-      }}
-    >
+    <div className="overflow-x-auto h-content">
       <table className="table table-pin-rows table-xs md:table-sm xl:table-md">
         <thead>
           <tr>

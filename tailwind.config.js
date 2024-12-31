@@ -5,7 +5,11 @@ import daisyui from 'daisyui';
 const config = {
   content: ['./src/**/*.{js,ts,jsx,tsx,mdx}'],
   theme: {
-    extend: {},
+    extend: {
+      height: {
+        content: 'calc(100dvh - 4rem)',
+      },
+    },
   },
   plugins: [daisyui],
   daisyui: {
