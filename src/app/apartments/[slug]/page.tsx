@@ -1,4 +1,3 @@
-import CoverPhotoUploader from '@/app/apartments/[slug]/coverPhotoUploader';
 import Image from '@/components/image';
 import { transformToSlug } from '@/lib/slugify';
 import { getApartmentBySlug } from '@/services/apartmentService';
@@ -26,9 +25,6 @@ export default async function Apartment({ params }: { params: Promise<{ slug: st
         className="max-h-96 xl:max-h-[512px] object-cover"
       />
       <ApartmentDetails apartment={apartment} />
-      <div className="p-4">
-        <CoverPhotoUploader slug={slug} />
-      </div>
     </div>
   );
 }

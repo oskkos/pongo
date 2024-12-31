@@ -1,8 +1,10 @@
 import 'server-only';
 
+import { Apartment } from '@prisma/client';
+
 import { generateSlug } from '@/lib/slugify';
 import * as apartmentRepository from '@/repositories/apartmentRepository';
-import { AddNewApartmentData } from '@/schemas/addNewApartmentSchema';
+import { EditApartmentData } from '@/schemas/editApartmentSchema';
 import { uploadImage } from '@/services/imageUploadService';
 
 export function getAllApartments() {
@@ -11,14 +13,29 @@ export function getAllApartments() {
 export function getApartmentBySlug(slug: string) {
   return apartmentRepository.getApartmentBySlug(slug);
 }
-export async function setCoverPhoto(coverPhoto: File, slug: string) {
+async function setCoverPhoto(coverPhoto: File, slug: string) {
   const coverImageId = await uploadImage(coverPhoto, slug);
   await apartmentRepository.updateApartment(slug, { coverImageId });
 }
-export async function addNewApartment(data: AddNewApartmentData) {
-  const slug = generateSlug(data.streetAddress);
+async function streetAddressChanged(oldSlug: string, newStreetAddress: string) {
+  const apartment = await getApartmentBySlug(oldSlug);
+  return oldSlug && apartment?.streetAddress !== newStreetAddress;
+}
+export async function editApartment(data: EditApartmentData) {
+  let apartment: Apartment;
   const { coverPhoto, ...apartmentData } = data;
-  const apartment = await apartmentRepository.addNewApartment({ ...apartmentData, slug: slug });
+  const oldSlug = data.slug;
+
+  const slug =
+    (oldSlug && (await streetAddressChanged(oldSlug, data.streetAddress))) || !oldSlug
+      ? generateSlug(data.streetAddress)
+      : oldSlug;
+
+  if (!oldSlug) {
+    apartment = await apartmentRepository.addNewApartment({ ...apartmentData, slug: slug });
+  } else {
+    apartment = await apartmentRepository.updateApartment(oldSlug, { ...apartmentData, slug: slug });
+  }
   if (coverPhoto?.[0]) {
     await setCoverPhoto(coverPhoto[0], slug);
   }

@@ -1,5 +1,6 @@
 import { Apartment } from '@prisma/client';
-import { MdEdit } from 'react-icons/md';
+
+import EditApartmentModal, { EditApartmentModalButton } from './editApartmentModal';
 
 export default function ApartmentDetails({ apartment }: { apartment: Apartment }) {
   return (
@@ -7,9 +8,7 @@ export default function ApartmentDetails({ apartment }: { apartment: Apartment }
       <div className="inline-flex justify-between items-end w-full">
         <div className="text-xl md:text-2xl font-bold">{apartment.streetAddress}</div>
         <div className="pl-8 pr-0">
-          <button className="btn btn-circle btn-ghost btn-sm">
-            <MdEdit />
-          </button>
+          <EditApartmentModalButton slug={apartment.slug} />
         </div>
       </div>
       <div className="text-sm md:text-lg">
@@ -22,6 +21,7 @@ export default function ApartmentDetails({ apartment }: { apartment: Apartment }
       <div className="text-xs md:text-sm italic overflow-auto max-h-16 md:max-h-32 lg:max-h-40 xl:max-h-48 2xl:max-h-64">
         {apartment.description}
       </div>
+      <EditApartmentModal apartment={apartment} />
     </div>
   );
 }

@@ -1,0 +1,142 @@
+'use client';
+
+import { Apartment } from '@prisma/client';
+import { Dispatch, SetStateAction, useEffect, useState } from 'react';
+import { FieldErrors, useForm } from 'react-hook-form';
+
+import { editApartment } from '@/actions';
+import Input from '@/components/input';
+import Textarea from '@/components/textarea';
+import { i18n } from '@/lib/i18n';
+import { EditApartmentData, EditApartmentSchemaResolver } from '@/schemas/editApartmentSchema';
+
+interface ToastData {
+  visible: boolean;
+  message: string;
+  type: string;
+}
+
+async function onSubmit(
+  data: EditApartmentData,
+  setToast: Dispatch<SetStateAction<ToastData>>,
+  onAfterSubmit?: () => void
+) {
+  try {
+    const ret = await editApartment(data);
+
+    if (ret?.status === 'error') {
+      setToast({ visible: true, message: ret.error, type: 'alert-error' });
+    }
+    onAfterSubmit?.();
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  } catch (e) {
+    setToast({ visible: true, message: i18n.Error, type: 'alert-error' });
+  }
+}
+function onError(errors: FieldErrors<EditApartmentData>) {
+  // These are reported alongside the input fields, just log the errors for now
+  console.warn('Form errors', errors);
+}
+
+function onToastDataChange(toast: ToastData, setToast: Dispatch<SetStateAction<ToastData>>) {
+  if (toast.visible) {
+    const timer = setTimeout(() => {
+      setToast({ visible: false, message: '', type: '' });
+    }, 3000);
+    return () => clearTimeout(timer);
+  }
+}
+
+export default function EditApartmentDetails({
+  apartment,
+  onAfterSubmit,
+}: {
+  apartment?: Apartment;
+  onAfterSubmit?: () => void;
+}) {
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<EditApartmentData>({
+    resolver: EditApartmentSchemaResolver,
+  });
+
+  const [toast, setToast] = useState({ visible: false, message: '', type: '' });
+  useEffect(() => {
+    onToastDataChange(toast, setToast);
+  }, [toast]);
+  return (
+    <div className="flex justify-center items-center">
+      {toast.visible && (
+        <div className="toast z-50">
+          <div className={`alert ${toast.type}`}>
+            <span>{toast.message}</span>
+          </div>
+        </div>
+      )}
+      <form
+        className="flex flex-col"
+        onSubmit={handleSubmit((data) => onSubmit(data, setToast, onAfterSubmit), onError)}
+      >
+        <Input label="" name="slug" register={register} type="hidden" value={apartment?.slug} error={errors.slug} />
+        <Input
+          label={i18n.Title}
+          name="title"
+          register={register}
+          value={apartment?.title ?? ''}
+          error={errors.title}
+        />
+        <Textarea
+          label={i18n.Description}
+          name="description"
+          register={register}
+          value={apartment?.description ?? ''}
+          error={errors.description}
+        />
+        <Input
+          label={i18n.ApartmentSize}
+          name="apartmentSize"
+          register={register}
+          error={errors.apartmentSize}
+          value={apartment?.apartmentSize}
+          type="number"
+        />
+        <Input
+          label={i18n.StreetAddress}
+          name="streetAddress"
+          value={apartment?.streetAddress}
+          register={register}
+          error={errors.streetAddress}
+        />
+        <Input
+          label={i18n.PostalCode}
+          name="postalCode"
+          value={apartment?.postalCode}
+          register={register}
+          error={errors.postalCode}
+        />
+        <Input
+          label={i18n.PostOffice}
+          name="postOffice"
+          value={apartment?.postOffice}
+          register={register}
+          error={errors.postOffice}
+        />
+
+        <Input
+          label={i18n.CoverPhoto}
+          name="coverPhoto"
+          register={register}
+          error={errors.coverPhoto}
+          type="file"
+          className="file-input file-input-bordered w-full max-w-xs"
+        />
+
+        <button className="btn btn-primary mt-2" type="submit">
+          {i18n.Submit}
+        </button>
+      </form>
+    </div>
+  );
+}

@@ -9,6 +9,7 @@ export default function Input<T extends FieldValues>({
   type,
   error,
   className,
+  value,
 }: {
   label: string;
   name: Path<T>;
@@ -16,6 +17,7 @@ export default function Input<T extends FieldValues>({
   type?: string;
   error?: FieldError;
   className?: string;
+  value?: string | number;
 }) {
   return (
     <>
@@ -25,6 +27,7 @@ export default function Input<T extends FieldValues>({
         placeholder={label}
         type={type ?? 'text'}
         className={`${className ?? 'input input-bordered w-full max-w-xs'}`}
+        defaultValue={value}
       />
       <FormFieldError error={error} />
     </>

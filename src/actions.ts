@@ -5,7 +5,7 @@ import { redirect } from 'next/navigation';
 import { FieldValues, Path } from 'react-hook-form';
 import { ZodError, ZodIssue } from 'zod';
 
-import { AddNewApartmentData, AddNewApartmentDataFields, AddNewApartmentSchema } from '@/schemas/addNewApartmentSchema';
+import { EditApartmentData, EditApartmentDataFields, EditApartmentSchema } from '@/schemas/editApartmentSchema';
 import * as apartmentService from '@/services/apartmentService';
 
 function handleZodErrors<T extends FieldValues>(errors: ZodIssue[], knwonFields: { [k: string]: Path<T> }) {
@@ -23,7 +23,7 @@ function handleZodErrors<T extends FieldValues>(errors: ZodIssue[], knwonFields:
 }
 function handleError(error: unknown) {
   if (error instanceof ZodError) {
-    return handleZodErrors(error.errors, AddNewApartmentDataFields).join(', ');
+    return handleZodErrors(error.errors, EditApartmentDataFields).join(', ');
   }
   if (error instanceof Error) {
     return error.message;
@@ -35,31 +35,19 @@ export async function getAllApartments() {
   return apartmentService.getAllApartments();
 }
 
-export async function addNewApartment(data: AddNewApartmentData) {
+export async function editApartment(data: EditApartmentData) {
   let apartment;
   try {
-    const result = AddNewApartmentSchema.parse(data);
-    apartment = await apartmentService.addNewApartment(result);
+    const result = EditApartmentSchema.parse(data);
+    apartment = await apartmentService.editApartment(result);
   } catch (error) {
+    console.log('Error adding new apartment', error);
     return { status: 'error', error: handleError(error) } as const;
   }
 
   revalidatePath(`/apartments/${apartment.slug}`);
   revalidatePath(`/apartments`);
-  redirect(`/apartments/${apartment.slug}`);
-}
-
-export async function setCoverPhoto(slug: string, coverPhoto: File) {
-  try {
-    if (!coverPhoto || !slug) {
-      throw new Error('Slug and cover photo are required');
-    }
-    await apartmentService.setCoverPhoto(coverPhoto, slug);
-  } catch (error) {
-    return { status: 'error', error: handleError(error) } as const;
+  if (data.slug !== apartment.slug) {
+    redirect(`/apartments/${apartment.slug}`);
   }
-
-  revalidatePath(`/apartments/${slug}`);
-  revalidatePath(`/apartments`);
-  return { status: 'success' } as const;
 }

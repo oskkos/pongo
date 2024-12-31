@@ -5,18 +5,20 @@ import { FormFieldError, FormFieldLabel } from '@/components/formFieldUtils';
 export default function Textarea<T extends FieldValues>({
   label,
   name,
+  value,
   register,
   error,
 }: {
   label: string;
   name: Path<T>;
+  value?: string | number;
   register: UseFormRegister<T>;
   error?: FieldError;
 }) {
   return (
     <>
       <FormFieldLabel label={label} />
-      <textarea {...register(name)} placeholder={label} className="textarea textarea-bordered" />
+      <textarea {...register(name)} placeholder={label} className="textarea textarea-bordered" value={value} />
       <FormFieldError error={error} />
     </>
   );

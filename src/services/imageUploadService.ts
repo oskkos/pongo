@@ -11,9 +11,10 @@ export async function uploadImage(file: File, slug: string) {
         { folder: `pongo/${slug}`, unique_filename: true, resource_type: 'image', type: 'upload' },
         (error, uploadResult) => {
           if (error) {
-            console.error(`Buffer upload_stream error`, error);
+            console.error(`Image upload error`, error);
             return resolve(undefined);
           }
+          console.log('Image uploaded', uploadResult);
           return resolve(uploadResult);
         }
       )

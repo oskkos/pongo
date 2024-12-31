@@ -10,7 +10,7 @@ export default function Image(props: CldImageProps) {
       <CldImage
         {...props}
         onError={(e) => {
-          console.log(e);
+          console.error(e);
         }}
       />
     );

@@ -1,0 +1,36 @@
+'use client';
+
+import { Apartment } from '@prisma/client';
+import { MdEdit } from 'react-icons/md';
+
+import EditApartmentDetails from '@/components/editApartmentDetails';
+
+export default function EditApartmentModal({ apartment }: { apartment: Apartment }) {
+  const hideModal = () => {
+    (document.getElementById(`editApartmentModal-${apartment.slug}`) as HTMLDialogElement).close();
+  };
+
+  return (
+    <dialog id={`editApartmentModal-${apartment.slug}`} className="modal modal-bottom sm:modal-middle">
+      <div className="modal-box">
+        <form method="dialog">
+          <button className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
+        </form>
+        <EditApartmentDetails apartment={apartment} onAfterSubmit={hideModal} />
+      </div>
+    </dialog>
+  );
+}
+
+export function EditApartmentModalButton({ slug }: { slug: string }) {
+  return (
+    <button
+      className="btn btn-circle btn-ghost btn-sm"
+      onClick={() => {
+        (document.getElementById(`editApartmentModal-${slug}`) as HTMLDialogElement).showModal();
+      }}
+    >
+      <MdEdit />
+    </button>
+  );
+}

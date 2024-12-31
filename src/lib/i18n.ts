@@ -8,6 +8,7 @@ export const i18n = {
   Error: 'Oops, we faced an error',
   PostalCode: 'Postal code',
   PostOffice: 'Post office',
+  Save: 'Save',
   StreetAddress: 'Street address',
   Submit: 'Submit',
   Title: 'Title',
