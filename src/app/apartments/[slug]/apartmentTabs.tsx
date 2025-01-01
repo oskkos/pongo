@@ -45,12 +45,6 @@ export default function ApartmentTabs({ tenants }: { tenants: Tenant[] }) {
     <TabBar>
       <Tab label={i18n.Tenants} selected>
         <TenantTable tenants={tenants} />
-        <pre className="h-96">rr</pre>
-        <div className="h-96">s</div>
-        <div className="h-96">s</div>
-        <div className="h-96">s</div>
-        <div className="h-96">s</div>
-        <div className="h-96">s</div>
       </Tab>
       <Tab label={i18n.Finance} disabled>
         Finance content

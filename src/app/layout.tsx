@@ -5,7 +5,7 @@ import './globals.css';
 import { Inter } from 'next/font/google';
 import Link from 'next/link';
 import { GiMonkey } from 'react-icons/gi';
-import { MdHouse, MdPerson } from 'react-icons/md';
+import { MdAttachMoney, MdHouse, MdPerson } from 'react-icons/md';
 
 import { i18n } from '@/lib/i18n';
 import { BottomNavAction, TopNavAction } from './navbarButtons';
@@ -18,8 +18,9 @@ export const metadata: Metadata = {
 };
 
 const actions = [
-  { path: '/apartments', label: i18n.Apartments, icon: <MdHouse size={24} /> },
-  { path: '/tenants', label: i18n.Tenants, icon: <MdPerson size={24} /> },
+  { path: '/apartments', label: i18n.Apartments, icon: <MdHouse size={24} />, disabled: false },
+  { path: '/tenants', label: i18n.Tenants, icon: <MdPerson size={24} />, disabled: false },
+  { path: '/finance', label: i18n.Finance, icon: <MdAttachMoney size={24} />, disabled: true },
 ] as const;
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
@@ -33,8 +34,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           </Link>
 
           <div className="hidden md:inline-flex ml-8 inline-flex gap-2">
-            {actions.map(({ path, label, icon }) => (
-              <TopNavAction key={path} path={path} label={label}>
+            {actions.map(({ path, label, icon, disabled }) => (
+              <TopNavAction key={path} path={path} label={label} disabled={disabled}>
                 {icon}
               </TopNavAction>
             ))}
@@ -43,8 +44,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <main className="container mx-auto pb-16 md:pb-0">{children}</main>
 
         <div className="btm-nav visible md:invisible">
-          {actions.map(({ path, label, icon }) => (
-            <BottomNavAction key={path} path={path} label={label}>
+          {actions.map(({ path, label, icon, disabled }) => (
+            <BottomNavAction key={path} path={path} label={label} disabled={disabled}>
               {icon}
             </BottomNavAction>
           ))}

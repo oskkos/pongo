@@ -88,7 +88,7 @@ export default function TenantTable({ tenants }: { tenants: TenantType[] }) {
             return (
               <tr key={tenant.id}>
                 <td>
-                  <Link href={`tenants/${tenant.slug}`}>
+                  <Link href={`/tenants/${tenant.slug}`}>
                     {tenant.lastName}, {tenant.firstName}
                   </Link>
                 </td>
@@ -99,7 +99,7 @@ export default function TenantTable({ tenants }: { tenants: TenantType[] }) {
                 {renderApartmentCell && (
                   <td>
                     {tenant.apartment && (
-                      <Link href={`apartments/${tenant.apartment.slug}`}>{tenant.apartment.streetAddress}</Link>
+                      <Link href={`/apartments/${tenant.apartment.slug}`}>{tenant.apartment.streetAddress}</Link>
                     )}
                   </td>
                 )}
