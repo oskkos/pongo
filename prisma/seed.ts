@@ -25,6 +25,7 @@ async function main() {
             email: `tenant${i}${j}@example.com`,
             firstName: `FirstName${i}${j}`,
             lastName: `LastName${i}${j}`,
+            slug: slugify(`FirstName${i}${j} LastName${i}${j}`, { lower: true }),
           })),
         },
       },
