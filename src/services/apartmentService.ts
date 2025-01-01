@@ -41,3 +41,7 @@ export async function editApartment(data: EditApartmentData) {
   }
   return apartment;
 }
+
+export async function getApartmentsForSelect() {
+  return apartmentRepository.getApartmentsForSelect();
+}

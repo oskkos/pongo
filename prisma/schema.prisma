@@ -31,21 +31,19 @@ model Apartment {
 }
 
 model Tenant {
-  id              String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  apartment       Apartment @relation(fields: [apartmentId], references: [id])
-  apartmentId     String    @map("apartment_id") @db.Uuid
-  createdAt       DateTime  @default(now()) @map("created_at")
-  deposit         Int
-  depositPaid     Boolean   @map("deposit_paid")
-  depositReturned Boolean   @map("deposit_returned")
-  email           String
-  firstName       String    @map("first_name")
-  lastName        String    @map("last_name")
-  modifiedAt      DateTime  @updatedAt @map("modified_at")
-  personId        String    @map("person_id")
-  phoneNumber     String    @map("phone_number")
-  tenantFrom      DateTime  @map("tenant_from")
-  tenantTo        DateTime? @map("tenant_to")
+  id          String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  apartment   Apartment @relation(fields: [apartmentId], references: [id])
+  apartmentId String    @map("apartment_id") @db.Uuid
+  createdAt   DateTime  @default(now()) @map("created_at")
+  email       String
+  firstName   String    @map("first_name")
+  lastName    String    @map("last_name")
+  modifiedAt  DateTime  @updatedAt @map("modified_at")
+  personId    String    @map("person_id")
+  phoneNumber String    @map("phone_number")
+  slug        String    @unique
+  tenantFrom  DateTime  @map("tenant_from")
+  tenantTo    DateTime? @map("tenant_to")
 
   @@map("tenants")
 }

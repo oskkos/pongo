@@ -1,6 +1,6 @@
+import { getAllTenants } from '@/actions';
 import AddNewBtn from '@/components/addNewBtn';
 import { i18n } from '@/lib/i18n';
-import getAllTenants from '@/services/tenantService';
 import TenantTable from './tenantTable';
 
 export default async function Tenants() {
@@ -10,9 +10,13 @@ export default async function Tenants() {
       <div>
         <AddNewBtn label={i18n.AddNewTenant} path="/tenants/add" />
       </div>
-      <div>
-        <TenantTable tenants={tenants} />
-      </div>
+      {tenants.length ? (
+        <div>
+          <TenantTable tenants={tenants} />
+        </div>
+      ) : (
+        <h2 className="mt-4">{i18n.NoTenantsAdded}</h2>
+      )}
     </main>
   );
 }

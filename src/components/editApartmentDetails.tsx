@@ -1,7 +1,6 @@
 'use client';
 
 import { Apartment } from '@prisma/client';
-import { Dispatch, SetStateAction, useEffect, useState } from 'react';
 import { FieldErrors, useForm } from 'react-hook-form';
 
 import { editApartment } from '@/actions';
@@ -9,42 +8,12 @@ import Input from '@/components/input';
 import Textarea from '@/components/textarea';
 import { i18n } from '@/lib/i18n';
 import { EditApartmentData, EditApartmentSchemaResolver } from '@/schemas/editApartmentSchema';
+import { onSubmit } from './formSubmitter';
+import { useToast } from './useToast';
 
-interface ToastData {
-  visible: boolean;
-  message: string;
-  type: string;
-}
-
-async function onSubmit(
-  data: EditApartmentData,
-  setToast: Dispatch<SetStateAction<ToastData>>,
-  onAfterSubmit?: () => void
-) {
-  try {
-    const ret = await editApartment(data);
-
-    if (ret?.status === 'error') {
-      setToast({ visible: true, message: ret.error, type: 'alert-error' });
-    }
-    onAfterSubmit?.();
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  } catch (e) {
-    setToast({ visible: true, message: i18n.Error, type: 'alert-error' });
-  }
-}
 function onError(errors: FieldErrors<EditApartmentData>) {
   // These are reported alongside the input fields, just log the errors for now
   console.warn('Form errors', errors);
-}
-
-function onToastDataChange(toast: ToastData, setToast: Dispatch<SetStateAction<ToastData>>) {
-  if (toast.visible) {
-    const timer = setTimeout(() => {
-      setToast({ visible: false, message: '', type: '' });
-    }, 3000);
-    return () => clearTimeout(timer);
-  }
 }
 
 export default function EditApartmentDetails({
@@ -62,10 +31,8 @@ export default function EditApartmentDetails({
     resolver: EditApartmentSchemaResolver,
   });
 
-  const [toast, setToast] = useState({ visible: false, message: '', type: '' });
-  useEffect(() => {
-    onToastDataChange(toast, setToast);
-  }, [toast]);
+  const [toast, setToast] = useToast();
+
   return (
     <div className="flex justify-center items-center">
       {toast.visible && (
@@ -77,7 +44,7 @@ export default function EditApartmentDetails({
       )}
       <form
         className="flex flex-col"
-        onSubmit={handleSubmit((data) => onSubmit(data, setToast, onAfterSubmit), onError)}
+        onSubmit={handleSubmit((data) => onSubmit(data, editApartment, setToast, onAfterSubmit), onError)}
       >
         <Input label="" name="slug" register={register} type="hidden" value={apartment?.slug} error={errors.slug} />
         <Input

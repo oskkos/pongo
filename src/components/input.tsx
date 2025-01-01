@@ -14,10 +14,10 @@ export default function Input<T extends FieldValues>({
   label: string;
   name: Path<T>;
   register: UseFormRegister<T>;
-  type?: string;
+  type?: 'string' | 'number' | 'date' | 'hidden' | 'file';
   error?: FieldError;
   className?: string;
-  value?: string | number;
+  value?: string | number | Date;
 }) {
   return (
     <>
@@ -27,7 +27,7 @@ export default function Input<T extends FieldValues>({
         placeholder={label}
         type={type ?? 'text'}
         className={`${className ?? 'input input-bordered w-full max-w-xs'}`}
-        defaultValue={value}
+        defaultValue={value instanceof Date ? value.toISOString() : value}
       />
       <FormFieldError error={error} />
     </>

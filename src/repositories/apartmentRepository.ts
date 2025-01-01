@@ -24,3 +24,11 @@ export function updateApartment(slug: string, data: Partial<Apartment>) {
     data,
   });
 }
+
+export async function getApartmentsForSelect() {
+  const apartments = await getAllApartments();
+  return apartments.map((apartment) => ({
+    streetAddress: apartment.streetAddress,
+    id: apartment.id,
+  }));
+}
