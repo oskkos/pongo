@@ -11,6 +11,7 @@ export const i18n = {
   Description: 'Description',
   Email: 'Email',
   Error: 'Oops, we faced an error',
+  Finance: 'Finance',
   FirstName: 'First name',
   LastName: 'Last name',
   Name: 'Name',

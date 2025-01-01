@@ -11,6 +11,7 @@ export function getAllApartments() {
 export function getApartmentBySlug(slug: string) {
   return prisma.apartment.findUnique({
     where: { slug },
+    include: { tenants: true },
   });
 }
 export function addNewApartment(data: Omit<Apartment, 'id' | 'createdAt' | 'modifiedAt' | 'coverImageId'>) {

@@ -6,7 +6,7 @@ import { SetStateAction, useEffect, useState } from 'react';
 
 import { i18n } from '@/lib/i18n';
 
-type TenantType = Tenant & { apartment: { slug: string; streetAddress: string } };
+type TenantType = Tenant & { apartment?: { slug: string; streetAddress: string } };
 interface SortType {
   property: 'name' | 'email' | 'phoneNumber' | 'streetAddress' | 'tenantFrom' | 'tenantTo';
   direction: 'asc' | 'desc';
@@ -30,8 +30,8 @@ function sortTenants(tenants: TenantType[], sort: SortType) {
       aValue = a.lastName + a.firstName;
       bValue = b.lastName + b.firstName;
     } else if (property === 'streetAddress') {
-      aValue = a.apartment.streetAddress;
-      bValue = b.apartment.streetAddress;
+      aValue = a.apartment?.streetAddress ?? '';
+      bValue = b.apartment?.streetAddress ?? '';
     } else {
       aValue = a[property] ?? '';
       bValue = b[property] ?? '';
@@ -55,8 +55,9 @@ export default function TenantTable({ tenants }: { tenants: TenantType[] }) {
     setSortedTenants([...tenants]);
   }, [sort, tenants]);
 
+  const renderApartmentCell = tenants.some((tenant) => tenant.apartment);
   return (
-    <div className="overflow-x-auto h-content">
+    <div className="overflow-x-auto max-h-content">
       <table className="table table-pin-rows table-xs md:table-sm xl:table-md">
         <thead>
           <tr>
@@ -69,9 +70,11 @@ export default function TenantTable({ tenants }: { tenants: TenantType[] }) {
             <th className="cursor-pointer" onClick={() => updateSort('phoneNumber', setSort)}>
               {i18n.PhoneNumber}
             </th>
-            <th className="cursor-pointer" onClick={() => updateSort('streetAddress', setSort)}>
-              {i18n.Apartment}
-            </th>
+            {renderApartmentCell && (
+              <th className="cursor-pointer" onClick={() => updateSort('streetAddress', setSort)}>
+                {i18n.Apartment}
+              </th>
+            )}
             <th className="cursor-pointer" onClick={() => updateSort('tenantFrom', setSort)}>
               {i18n.TenantFrom}
             </th>
@@ -93,9 +96,13 @@ export default function TenantTable({ tenants }: { tenants: TenantType[] }) {
                   <Link href={`mailto:${tenant.email}`}>{tenant.email}</Link>
                 </td>
                 <td>{tenant.phoneNumber}</td>
-                <td>
-                  <Link href={`apartments/${tenant.apartment.slug}`}>{tenant.apartment.streetAddress}</Link>
-                </td>
+                {renderApartmentCell && (
+                  <td>
+                    {tenant.apartment && (
+                      <Link href={`apartments/${tenant.apartment.slug}`}>{tenant.apartment.streetAddress}</Link>
+                    )}
+                  </td>
+                )}
                 <td>{tenant.tenantFrom.toLocaleDateString()}</td>
                 <td>{tenant.tenantTo?.toLocaleDateString() ?? ''}</td>
               </tr>
