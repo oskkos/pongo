@@ -1,4 +1,5 @@
 import Image from '@/components/image';
+import { i18n } from '@/lib/i18n';
 import { transformToSlug } from '@/lib/slugify';
 import { getApartmentBySlug } from '@/services/apartmentService';
 import ApartmentDetails from './apartmentDetails';
@@ -9,7 +10,7 @@ export default async function Apartment({ params }: { params: Promise<{ slug: st
   const slug = transformToSlug((await params).slug);
   const apartment = await getApartmentBySlug(slug);
   if (!apartment) {
-    return <div>Apartment not found</div>;
+    return <div>{i18n.ApartmentNotFound}</div>;
   }
 
   return (

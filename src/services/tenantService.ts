@@ -2,11 +2,13 @@ import { Tenant } from '@prisma/client';
 
 import { generateSlug } from '@/lib/slugify';
 import * as tenantRepository from '@/repositories/tenantRepository';
-import { getTenantBySlug } from '@/repositories/tenantRepository';
 import { EditTenantData } from '@/schemas/editTenantSchema';
 
 export function getAllTenants() {
   return tenantRepository.getAllTenants();
+}
+export function getTenantBySlug(slug: string) {
+  return tenantRepository.getTenantBySlug(slug);
 }
 
 function getName(tenant: { firstName: string; lastName: string }) {

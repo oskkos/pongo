@@ -8,7 +8,7 @@ import { i18n } from '@/lib/i18n';
 
 type TenantType = Tenant & { apartment: { slug: string; streetAddress: string } };
 interface SortType {
-  property: 'name' | 'email' | 'streetAddress' | 'tenantFrom' | 'tenantTo';
+  property: 'name' | 'email' | 'phoneNumber' | 'streetAddress' | 'tenantFrom' | 'tenantTo';
   direction: 'asc' | 'desc';
 }
 
@@ -64,16 +64,19 @@ export default function TenantTable({ tenants }: { tenants: TenantType[] }) {
               {i18n.Name}
             </th>
             <th className="cursor-pointer" onClick={() => updateSort('email', setSort)}>
-              {i18n.Contact}
+              {i18n.Email}
+            </th>
+            <th className="cursor-pointer" onClick={() => updateSort('phoneNumber', setSort)}>
+              {i18n.PhoneNumber}
             </th>
             <th className="cursor-pointer" onClick={() => updateSort('streetAddress', setSort)}>
               {i18n.Apartment}
             </th>
             <th className="cursor-pointer" onClick={() => updateSort('tenantFrom', setSort)}>
-              {i18n.From}
+              {i18n.TenantFrom}
             </th>
             <th className="cursor-pointer" onClick={() => updateSort('tenantTo', setSort)}>
-              {i18n.To}
+              {i18n.TenantTo}
             </th>
           </tr>
         </thead>
@@ -82,19 +85,19 @@ export default function TenantTable({ tenants }: { tenants: TenantType[] }) {
             return (
               <tr key={tenant.id}>
                 <td>
-                  {tenant.lastName}, {tenant.firstName}
+                  <Link href={`tenants/${tenant.slug}`}>
+                    {tenant.lastName}, {tenant.firstName}
+                  </Link>
                 </td>
                 <td>
-                  <div>
-                    <Link href={`mailto:${tenant.email}`}>{tenant.email}</Link>
-                  </div>
-                  <div>{tenant.phoneNumber}</div>
+                  <Link href={`mailto:${tenant.email}`}>{tenant.email}</Link>
                 </td>
+                <td>{tenant.phoneNumber}</td>
                 <td>
                   <Link href={`apartments/${tenant.apartment.slug}`}>{tenant.apartment.streetAddress}</Link>
                 </td>
-                <td>{tenant.tenantFrom.toISOString()}</td>
-                <td>{tenant.tenantTo?.toISOString()}</td>
+                <td>{tenant.tenantFrom.toLocaleDateString()}</td>
+                <td>{tenant.tenantTo?.toLocaleDateString() ?? ''}</td>
               </tr>
             );
           })}

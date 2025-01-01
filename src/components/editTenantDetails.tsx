@@ -34,6 +34,11 @@ export default function EditTenantDetails({
   });
 
   const [toast, setToast] = useToast();
+
+  if (!apartments.length) {
+    return <h2 className="mt-4">{i18n.AddApartmentPriorTenant}</h2>;
+  }
+
   const apartmentOptions = apartments.map((apartment) => ({ value: apartment.id, label: apartment.streetAddress }));
 
   return (
@@ -90,7 +95,7 @@ export default function EditTenantDetails({
         <Input
           label={i18n.TenantFrom}
           name="tenantFrom"
-          value={tenant?.tenantFrom}
+          value={tenant?.tenantFrom ? tenant.tenantFrom.toISOString().split('T')[0] : ''}
           register={register}
           error={errors.tenantFrom}
           type="date"
@@ -98,7 +103,7 @@ export default function EditTenantDetails({
         <Input
           label={i18n.TenantTo}
           name="tenantTo"
-          value={tenant?.tenantTo ?? ''}
+          value={tenant?.tenantTo ? tenant.tenantTo.toISOString().split('T')[0] : ''}
           register={register}
           error={errors.tenantTo}
           type="date"
