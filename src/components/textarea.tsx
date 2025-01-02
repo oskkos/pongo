@@ -18,7 +18,12 @@ export default function Textarea<T extends FieldValues>({
   return (
     <>
       <FormFieldLabel label={label} />
-      <textarea {...register(name)} placeholder={label} className="textarea textarea-bordered" value={value} />
+      <textarea
+        {...register(name)}
+        placeholder={label}
+        className="textarea textarea-bordered"
+        defaultValue={value ?? ''}
+      />
       <FormFieldError error={error} />
     </>
   );

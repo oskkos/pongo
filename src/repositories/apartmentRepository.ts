@@ -22,6 +22,8 @@ export async function getApartmentBySlug(slug: string) {
 export async function addNewApartment(data: Omit<Apartment, 'id' | 'createdAt' | 'modifiedAt' | 'coverImageId'>) {
   const userIdFromSession = await getUserIdFromSession();
   if (data.userId !== userIdFromSession) {
+    console.log('userIdFromSession', userIdFromSession);
+    console.log('data.userId', data.userId);
     throw new Error('Unauthorized');
   }
   return prisma.apartment.create({
@@ -31,6 +33,8 @@ export async function addNewApartment(data: Omit<Apartment, 'id' | 'createdAt' |
 export async function updateApartment(slug: string, data: Partial<Apartment>) {
   const userIdFromSession = await getUserIdFromSession();
   if (data.userId !== userIdFromSession) {
+    console.log('userIdFromSession', userIdFromSession);
+    console.log('data.userId', data.userId);
     throw new Error('Unauthorized');
   }
   return prisma.apartment.update({

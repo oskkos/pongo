@@ -16,8 +16,8 @@ export async function onSubmit<T>(
       setToast?.({ visible: true, message: ret.error, type: 'alert-error' });
     }
     onAfterSubmit?.();
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
   } catch (e) {
+    console.error(e);
     setToast?.({ visible: true, message: i18n.Error, type: 'alert-error' });
   }
 }
