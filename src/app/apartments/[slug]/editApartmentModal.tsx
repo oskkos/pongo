@@ -7,7 +7,10 @@ import EditApartmentDetails from '@/components/editApartmentDetails';
 
 export default function EditApartmentModal({ userId, apartment }: { userId: string; apartment: Apartment }) {
   const hideModal = () => {
-    (document.getElementById(`editApartmentModal-${apartment.slug}`) as HTMLDialogElement).close();
+    const modal = document.getElementById(`editApartmentModal-${apartment.slug}`) as HTMLDialogElement;
+    if (modal) {
+      modal.close();
+    }
   };
 
   return (
