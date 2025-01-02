@@ -18,6 +18,9 @@ export async function onSubmit<T>(
     onAfterSubmit?.();
   } catch (e) {
     console.error(e);
+    if (e instanceof Error && e.message === 'NEXT_REDIRECT') {
+      return;
+    }
     setToast?.({ visible: true, message: i18n.Error, type: 'alert-error' });
   }
 }
