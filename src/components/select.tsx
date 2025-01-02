@@ -20,7 +20,7 @@ export default function Select<T extends FieldValues>({
   return (
     <>
       <FormFieldLabel label={label} />
-      <select {...register(name)} className="select select-bordered w-full max-w-xs" value={value}>
+      <select {...register(name)} className="select select-bordered w-full max-w-xs" defaultValue={value}>
         {options.map((option) => (
           <option key={option.value} value={option.value}>
             {option.label}
