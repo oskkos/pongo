@@ -1,3 +1,5 @@
+import 'server-only';
+
 import { Metadata } from 'next';
 
 import './globals.css';
@@ -7,6 +9,8 @@ import Link from 'next/link';
 import { GiMonkey } from 'react-icons/gi';
 import { MdAttachMoney, MdHouse, MdPerson } from 'react-icons/md';
 
+import { auth } from '@/auth';
+import { SignOut } from '@/components/signOut';
 import { i18n } from '@/lib/i18n';
 import { BottomNavAction, TopNavAction } from './navbarButtons';
 
@@ -23,12 +27,12 @@ const actions = [
   { path: '/finance', label: i18n.Finance, icon: <MdAttachMoney size={24} />, disabled: true },
 ] as const;
 
-export default function RootLayout({ children }: { children: React.ReactNode }) {
+function AuthenticatedLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en">
-      <body className={inter.className}>
-        <div className="navbar md:sticky top-0 z-50 bg-base-300">
-          <Link href="/" className="text-2xl font-bold">
+    <>
+      <div className="navbar md:sticky top-0 z-50 bg-base-300 justify-between">
+        <div className="inline-flex">
+          <Link href="/" className="text-2xl font-bold inline-flex">
             <GiMonkey size={40} className="mr-2" />
             <span>pongo</span>
           </Link>
@@ -41,15 +45,44 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             ))}
           </div>
         </div>
-        <main className="container mx-auto pb-16 md:pb-0">{children}</main>
+        <SignOut />
+      </div>
+      <main className="container mx-auto pb-16 md:pb-0">{children}</main>
 
-        <div className="btm-nav visible md:invisible">
-          {actions.map(({ path, label, icon, disabled }) => (
-            <BottomNavAction key={path} path={path} label={label} disabled={disabled}>
-              {icon}
-            </BottomNavAction>
-          ))}
-        </div>
+      <div className="btm-nav visible md:invisible">
+        {actions.map(({ path, label, icon, disabled }) => (
+          <BottomNavAction key={path} path={path} label={label} disabled={disabled}>
+            {icon}
+          </BottomNavAction>
+        ))}
+      </div>
+    </>
+  );
+}
+function UnauthenticatedLayout({ children }: { children: React.ReactNode }) {
+  return (
+    <>
+      <div className="navbar md:sticky top-0 z-50 bg-base-300">
+        <Link href="/" className="text-2xl font-bold">
+          <GiMonkey size={40} className="mr-2" />
+          <span>pongo</span>
+        </Link>
+      </div>
+      <main className="container mx-auto pb-16 md:pb-0">{children}</main>
+    </>
+  );
+}
+
+export default async function RootLayout({ children }: { children: React.ReactNode }) {
+  const session = await auth();
+  return (
+    <html lang="en">
+      <body className={inter.className}>
+        {session ? (
+          <AuthenticatedLayout>{children}</AuthenticatedLayout>
+        ) : (
+          <UnauthenticatedLayout>{children}</UnauthenticatedLayout>
+        )}
       </body>
     </html>
   );
