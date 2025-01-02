@@ -47,3 +47,14 @@ model Tenant {
 
   @@map("tenants")
 }
+
+model User {
+  id         String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  createdAt  DateTime @default(now()) @map("created_at")
+  email      String   @unique
+  image      String?
+  modifiedAt DateTime @updatedAt @map("modified_at")
+  name       String
+
+  @@map("users")
+}

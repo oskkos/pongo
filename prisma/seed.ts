@@ -4,7 +4,7 @@ import { prisma } from './prisma';
 
 async function main() {
   for (let i = 1; i <= 5; i++) {
-    const apartment = await prisma.apartment.create({
+    await prisma.apartment.create({
       data: {
         apartmentSize: 100 + i,
         description: `Apartment ${i} description`,
@@ -30,7 +30,6 @@ async function main() {
         },
       },
     });
-    console.log(`Created apartment with id: ${apartment.id}`);
   }
 }
 

@@ -7,8 +7,7 @@ export const config = {
 };
 
 export default auth((req) => {
-  if (!req.auth && req.nextUrl.pathname !== '/signin') {
-    console.log('redirecting to signin');
+  if (!req.auth) {
     const newUrl = new URL('/signin', req.nextUrl.origin);
     return Response.redirect(newUrl);
   }

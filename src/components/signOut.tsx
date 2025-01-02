@@ -9,11 +9,11 @@ export function SignOut() {
       action={async () => {
         'use server';
         await signOut({ redirect: false });
-        redirect('/');
+        redirect('/signin');
       }}
     >
       <button className="btn btn-circle" type="submit">
-        <MdLogout />
+        <MdLogout size={24} />
       </button>
     </form>
   );

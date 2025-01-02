@@ -4,6 +4,7 @@ import { Metadata } from 'next';
 
 import './globals.css';
 
+import { Session } from 'next-auth';
 import { Inter } from 'next/font/google';
 import Link from 'next/link';
 import { GiMonkey } from 'react-icons/gi';
@@ -12,6 +13,7 @@ import { MdAttachMoney, MdHouse, MdPerson } from 'react-icons/md';
 import { auth } from '@/auth';
 import { SignOut } from '@/components/signOut';
 import { i18n } from '@/lib/i18n';
+import { upsertUser } from '@/services/userService';
 import { BottomNavAction, TopNavAction } from './navbarButtons';
 
 const inter = Inter({ subsets: ['latin'] });
@@ -27,7 +29,18 @@ const actions = [
   { path: '/finance', label: i18n.Finance, icon: <MdAttachMoney size={24} />, disabled: true },
 ] as const;
 
-function AuthenticatedLayout({ children }: { children: React.ReactNode }) {
+async function AuthenticatedLayout({ session, children }: { session: Session; children: React.ReactNode }) {
+  if (!session.user?.email) {
+    throw new Error('No user in session');
+  }
+  if (!session.user.id) {
+    const dbUser = await upsertUser({
+      email: session.user.email,
+      name: session.user.name ?? '-',
+      image: session.user.image ?? null,
+    });
+    session.user.id = dbUser?.id;
+  }
   return (
     <>
       <div className="navbar md:sticky top-0 z-50 bg-base-300 justify-between">
@@ -79,7 +92,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
     <html lang="en">
       <body className={inter.className}>
         {session ? (
-          <AuthenticatedLayout>{children}</AuthenticatedLayout>
+          <AuthenticatedLayout session={session}>{children}</AuthenticatedLayout>
         ) : (
           <UnauthenticatedLayout>{children}</UnauthenticatedLayout>
         )}

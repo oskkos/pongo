@@ -49,7 +49,7 @@ export async function editApartment(data: EditApartmentData) {
     const result = EditApartmentSchema.parse(data);
     apartment = await apartmentService.editApartment(result);
   } catch (error) {
-    console.log('Error adding new apartment', error);
+    console.error('Error adding new apartment', error);
     return { status: 'error', error: handleError(error) } as const;
   }
 
@@ -66,7 +66,7 @@ export async function editTenant(data: EditTenantData) {
     const result = EditTenantSchema.parse(data);
     tenant = await tenantService.editTenant(result);
   } catch (error) {
-    console.log('Error adding new tenant', error);
+    console.error('Error adding new tenant', error);
     return { status: 'error', error: handleError(error) } as const;
   }
 
