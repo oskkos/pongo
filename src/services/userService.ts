@@ -1,7 +1,5 @@
-import { User } from '@prisma/client';
-
 import * as userRepository from '@/repositories/userRepository';
 
-export function upsertUser(user: Omit<User, 'id' | 'createdAt' | 'modifiedAt'>) {
+export function upsertUser(user: { email: string; name: string; image: string | null }) {
   return userRepository.upsertUser(user);
 }

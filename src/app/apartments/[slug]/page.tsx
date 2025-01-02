@@ -1,3 +1,4 @@
+import { getUserIdFromSession } from '@/auth';
 import Image from '@/components/image';
 import { i18n } from '@/lib/i18n';
 import { transformToSlug } from '@/lib/slugify';
@@ -8,6 +9,7 @@ import ApartmentTabs from './apartmentTabs';
 export const dynamic = 'force-dynamic';
 
 export default async function Apartment({ params }: { params: Promise<{ slug: string }> }) {
+  const userId = await getUserIdFromSession();
   const slug = transformToSlug((await params).slug);
   const apartment = await getApartmentBySlug(slug);
   if (!apartment) {
@@ -27,7 +29,7 @@ export default async function Apartment({ params }: { params: Promise<{ slug: st
           className="max-h-96 xl:max-h-[512px] object-cover"
           priority
         />
-        <ApartmentDetails apartment={apartment} />
+        <ApartmentDetails apartment={apartment} userId={userId} />
       </div>
       <ApartmentTabs tenants={apartment.tenants} />
     </main>

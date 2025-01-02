@@ -33,14 +33,13 @@ async function AuthenticatedLayout({ session, children }: { session: Session; ch
   if (!session.user?.email) {
     throw new Error('No user in session');
   }
-  if (!session.user.id) {
-    const dbUser = await upsertUser({
-      email: session.user.email,
-      name: session.user.name ?? '-',
-      image: session.user.image ?? null,
-    });
-    session.user.id = dbUser?.id;
-  }
+  // Ensure that user details are refreshed at least once per session
+  await upsertUser({
+    email: session.user.email,
+    name: session.user.name ?? '-',
+    image: session.user.image ?? null,
+  });
+
   return (
     <>
       <div className="navbar md:sticky top-0 z-50 bg-base-300 justify-between">

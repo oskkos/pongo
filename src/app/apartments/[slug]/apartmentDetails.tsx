@@ -1,8 +1,8 @@
-import { Apartment } from '@prisma/client';
-
 import EditApartmentModal, { EditApartmentModalButton } from './editApartmentModal';
 
-export default function ApartmentDetails({ apartment }: { apartment: Apartment }) {
+import type { Apartment } from '@prisma/client';
+
+export default function ApartmentDetails({ apartment, userId }: { apartment: Apartment; userId: string }) {
   return (
     <div className="absolute top-0 left-0 bg-base-300 text-base-content opacity-75 max-w-prose p-3 m-3 md:p-4 md:m-4 rounded-lg shadow-xl">
       <div className="inline-flex justify-between items-end w-full">
@@ -21,7 +21,7 @@ export default function ApartmentDetails({ apartment }: { apartment: Apartment }
       <div className="text-xs md:text-sm italic overflow-auto max-h-16 md:max-h-32 lg:max-h-40 xl:max-h-48 2xl:max-h-64">
         {apartment.description}
       </div>
-      <EditApartmentModal apartment={apartment} />
+      <EditApartmentModal apartment={apartment} userId={userId} />
     </div>
   );
 }

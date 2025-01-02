@@ -3,6 +3,16 @@ import slugify from 'slugify';
 import { prisma } from './prisma';
 
 async function main() {
+  const users = [];
+  for (let i = 1; i <= 5; i++) {
+    const user = await prisma.user.create({
+      data: {
+        email: `user${i}_${new Date().getTime()}@google.com`,
+        name: `User ${i}`,
+      },
+    });
+    users.push(user);
+  }
   for (let i = 1; i <= 5; i++) {
     await prisma.apartment.create({
       data: {
@@ -13,15 +23,13 @@ async function main() {
         streetAddress: `Street Address ${i}`,
         title: `Apartment ${i}`,
         slug: slugify(`Streaet Äddress ${i}`, { lower: true }),
+        userId: users[i - 1]?.id ?? '',
         tenants: {
           create: Array.from({ length: 5 }, (_, j) => ({
             personId: `person${i}${j}`,
             phoneNumber: `123-456-789${j}`,
             tenantFrom: new Date(),
             tenantTo: new Date(new Date().setFullYear(new Date().getFullYear() + 1)),
-            deposit: 1000 + j * 100,
-            depositPaid: j % 2 === 0,
-            depositReturned: j % 3 === 0,
             email: `tenant${i}${j}@example.com`,
             firstName: `FirstName${i}${j}`,
             lastName: `LastName${i}${j}`,

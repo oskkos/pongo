@@ -3,23 +3,36 @@ import 'server-only';
 import { Apartment } from '@prisma/client';
 import { prisma } from 'prisma/prisma';
 
-export function getAllApartments() {
+import { getUserIdFromSession } from '@/auth';
+
+export async function getAllApartments() {
+  const userId = await getUserIdFromSession();
   return prisma.apartment.findMany({
+    where: { userId },
     orderBy: { streetAddress: 'asc' },
   });
 }
-export function getApartmentBySlug(slug: string) {
+export async function getApartmentBySlug(slug: string) {
+  const userId = await getUserIdFromSession();
   return prisma.apartment.findUnique({
-    where: { slug },
+    where: { slug, userId },
     include: { tenants: true },
   });
 }
-export function addNewApartment(data: Omit<Apartment, 'id' | 'createdAt' | 'modifiedAt' | 'coverImageId'>) {
+export async function addNewApartment(data: Omit<Apartment, 'id' | 'createdAt' | 'modifiedAt' | 'coverImageId'>) {
+  const userIdFromSession = await getUserIdFromSession();
+  if (data.userId !== userIdFromSession) {
+    throw new Error('Unauthorized');
+  }
   return prisma.apartment.create({
     data,
   });
 }
-export function updateApartment(slug: string, data: Partial<Apartment>) {
+export async function updateApartment(slug: string, data: Partial<Apartment>) {
+  const userIdFromSession = await getUserIdFromSession();
+  if (data.userId !== userIdFromSession) {
+    throw new Error('Unauthorized');
+  }
   return prisma.apartment.update({
     where: { slug },
     data,

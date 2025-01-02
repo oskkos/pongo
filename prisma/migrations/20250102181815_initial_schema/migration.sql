@@ -11,6 +11,7 @@ CREATE TABLE "apartments" (
     "slug" TEXT NOT NULL,
     "street_address" TEXT NOT NULL,
     "title" TEXT,
+    "user_id" UUID NOT NULL,
 
     CONSTRAINT "apartments_pkey" PRIMARY KEY ("id")
 );
@@ -53,6 +54,9 @@ CREATE UNIQUE INDEX "tenants_slug_key" ON "tenants"("slug");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "users_email_key" ON "users"("email");
+
+-- AddForeignKey
+ALTER TABLE "apartments" ADD CONSTRAINT "apartments_user_id_fkey" FOREIGN KEY ("user_id") REFERENCES "users"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "tenants" ADD CONSTRAINT "tenants_apartment_id_fkey" FOREIGN KEY ("apartment_id") REFERENCES "apartments"("id") ON DELETE RESTRICT ON UPDATE CASCADE;

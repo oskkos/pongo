@@ -12,6 +12,7 @@ export interface EditApartmentData {
   streetAddress: string;
   slug?: string;
   title: string | null;
+  userId: string;
 }
 export const EditApartmentDataFields: Record<string, keyof EditApartmentData> = {
   apartmentSize: 'apartmentSize',
@@ -22,6 +23,7 @@ export const EditApartmentDataFields: Record<string, keyof EditApartmentData> = 
   streetAddress: 'streetAddress',
   slug: 'slug',
   title: 'title',
+  userId: 'userId',
 };
 export const EditApartmentSchema: ZodType<EditApartmentData> = z.object({
   apartmentSize: z.coerce.number().positive().int(),
@@ -32,6 +34,7 @@ export const EditApartmentSchema: ZodType<EditApartmentData> = z.object({
   streetAddress: z.string().min(1),
   slug: z.string().optional(),
   title: z.string().min(1),
+  userId: z.string().uuid(),
 });
 
 export const EditApartmentSchemaResolver = zodResolver(EditApartmentSchema);

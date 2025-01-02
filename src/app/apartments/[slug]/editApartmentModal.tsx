@@ -5,7 +5,7 @@ import { MdEdit } from 'react-icons/md';
 
 import EditApartmentDetails from '@/components/editApartmentDetails';
 
-export default function EditApartmentModal({ apartment }: { apartment: Apartment }) {
+export default function EditApartmentModal({ userId, apartment }: { userId: string; apartment: Apartment }) {
   const hideModal = () => {
     (document.getElementById(`editApartmentModal-${apartment.slug}`) as HTMLDialogElement).close();
   };
@@ -16,7 +16,7 @@ export default function EditApartmentModal({ apartment }: { apartment: Apartment
         <form method="dialog">
           <button className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
         </form>
-        <EditApartmentDetails apartment={apartment} onAfterSubmit={hideModal} />
+        <EditApartmentDetails apartment={apartment} userId={userId} onAfterSubmit={hideModal} />
       </div>
     </dialog>
   );

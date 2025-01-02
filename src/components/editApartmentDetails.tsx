@@ -1,7 +1,6 @@
 'use client';
 
-import { Apartment } from '@prisma/client';
-import { FieldErrors, useForm } from 'react-hook-form';
+import { useForm } from 'react-hook-form';
 
 import { editApartment } from '@/actions';
 import Input from '@/components/input';
@@ -11,15 +10,20 @@ import { EditApartmentData, EditApartmentSchemaResolver } from '@/schemas/editAp
 import { onSubmit } from './formSubmitter';
 import { useToast } from './useToast';
 
+import type { Apartment } from '@prisma/client';
+import type { FieldErrors } from 'react-hook-form';
+
 function onError(errors: FieldErrors<EditApartmentData>) {
   // These are reported alongside the input fields, just log the errors for now
   console.warn('Form errors', errors);
 }
 
 export default function EditApartmentDetails({
+  userId,
   apartment,
   onAfterSubmit,
 }: {
+  userId: string;
   apartment?: Apartment;
   onAfterSubmit?: () => void;
 }) {
@@ -47,6 +51,7 @@ export default function EditApartmentDetails({
         onSubmit={handleSubmit((data) => onSubmit(data, editApartment, setToast, onAfterSubmit), onError)}
       >
         <Input label="" name="slug" register={register} type="hidden" value={apartment?.slug} error={errors.slug} />
+        <Input label="" name="userId" register={register} type="hidden" value={userId} error={errors.userId} />
         <Input
           label={i18n.Title}
           name="title"

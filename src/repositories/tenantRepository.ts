@@ -1,15 +1,24 @@
+import 'server-only';
+
 import { Tenant } from '@prisma/client';
 import { prisma } from 'prisma/prisma';
 
+import { getUserIdFromSession } from '@/auth';
+
 export async function getAllTenants() {
+  const userId = await getUserIdFromSession();
+
   return prisma.tenant.findMany({
+    where: { apartment: { userId } },
     orderBy: { tenantFrom: 'desc' },
     include: { apartment: { select: { slug: true, streetAddress: true } } },
   });
 }
-export function getTenantBySlug(slug: string) {
+export async function getTenantBySlug(slug: string) {
+  const userId = await getUserIdFromSession();
+
   return prisma.tenant.findUnique({
-    where: { slug },
+    where: { apartment: { userId }, slug },
   });
 }
 export function addNewTenant(data: Omit<Tenant, 'id' | 'createdAt' | 'modifiedAt'>) {
