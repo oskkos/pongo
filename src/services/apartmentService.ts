@@ -13,9 +13,9 @@ export function getAllApartments() {
 export function getApartmentBySlug(slug: string) {
   return apartmentRepository.getApartmentBySlug(slug);
 }
-async function setCoverPhoto(coverPhoto: File, slug: string) {
+async function setCoverPhoto(coverPhoto: File, slug: string, userId: string) {
   const coverImageId = await uploadImage(coverPhoto, slug);
-  await apartmentRepository.updateApartment(slug, { coverImageId });
+  await apartmentRepository.updateApartment(slug, { coverImageId, userId });
 }
 async function streetAddressChanged(oldSlug: string, newStreetAddress: string) {
   const apartment = await getApartmentBySlug(oldSlug);
@@ -37,7 +37,7 @@ export async function editApartment(data: EditApartmentData) {
     apartment = await apartmentRepository.updateApartment(oldSlug, { ...apartmentData, slug: slug });
   }
   if (coverPhoto?.[0]) {
-    await setCoverPhoto(coverPhoto[0], slug);
+    await setCoverPhoto(coverPhoto[0], slug, data.userId);
   }
   return apartment;
 }

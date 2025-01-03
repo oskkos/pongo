@@ -30,7 +30,7 @@ export async function addNewApartment(data: Omit<Apartment, 'id' | 'createdAt' |
     data,
   });
 }
-export async function updateApartment(slug: string, data: Partial<Apartment>) {
+export async function updateApartment(slug: string, data: { userId: string } & Partial<Apartment>) {
   const userIdFromSession = await getUserIdFromSession();
   if (data.userId !== userIdFromSession) {
     console.log('userIdFromSession', userIdFromSession);
