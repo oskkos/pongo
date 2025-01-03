@@ -33,7 +33,7 @@ export function Tab({
         disabled={disabled}
         defaultChecked={selected}
       />
-      <div role="tabpanel" className="tab-content bg-neutral rounded-b-lg p-6">
+      <div role="tabpanel" className="tab-content bg-neutral rounded-b-lg">
         {children}
       </div>
     </>
@@ -44,7 +44,9 @@ export default function ApartmentTabs({ tenants }: { tenants: Tenant[] }) {
   return (
     <TabBar>
       <Tab label={i18n.Tenants} selected>
-        <TenantTable tenants={tenants} />
+        <div className="w-full max-w-[100vw] p-4">
+          <TenantTable tenants={tenants} />
+        </div>
       </Tab>
       <Tab label={i18n.Finance} disabled>
         Finance content
