@@ -13,7 +13,7 @@ export default function Select<T extends FieldValues>({
   label: string;
   name: Path<T>;
   value?: string | number;
-  options: { value: string; label: string }[];
+  options: { value: string; label: string; title?: string | null }[];
   register: UseFormRegister<T>;
   error?: FieldError;
 }) {
@@ -22,7 +22,7 @@ export default function Select<T extends FieldValues>({
       <FormFieldLabel label={label} />
       <select {...register(name)} className="select select-bordered w-full max-w-xs" defaultValue={value}>
         {options.map((option) => (
-          <option key={option.value} value={option.value}>
+          <option key={option.value} value={option.value} title={option.title ?? ''}>
             {option.label}
           </option>
         ))}

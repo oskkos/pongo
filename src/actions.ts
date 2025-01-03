@@ -7,7 +7,9 @@ import { ZodError, ZodIssue } from 'zod';
 
 import { EditApartmentData, EditApartmentDataFields, EditApartmentSchema } from '@/schemas/editApartmentSchema';
 import * as apartmentService from '@/services/apartmentService';
+import * as financeService from '@/services/financeService';
 import * as tenantService from '@/services/tenantService';
+import { EditFinancialRecordData, EditFinancialRecordSchema } from './schemas/editFinancialRecordSchema';
 import { EditTenantData, EditTenantSchema } from './schemas/editTenantSchema';
 
 function handleZodErrors<T extends FieldValues>(errors: ZodIssue[], knwonFields: { [k: string]: Path<T> }) {
@@ -75,4 +77,22 @@ export async function editTenant(data: EditTenantData) {
   if (data.slug !== tenant.slug) {
     redirect(`/tenants/${tenant.slug}`);
   }
+}
+
+export async function getFinancialRecordCategories() {
+  return financeService.getFinancialRecordCategories();
+}
+
+export async function editFinancialRecord(data: EditFinancialRecordData) {
+  try {
+    const result = EditFinancialRecordSchema.parse(data);
+    console.log(result);
+    await financeService.editFinancialRecord(result);
+  } catch (error) {
+    console.error('Error adding new financial record', error);
+    return { status: 'error', error: handleError(error) } as const;
+  }
+
+  revalidatePath(`/finances`);
+  redirect(`/finances`);
 }

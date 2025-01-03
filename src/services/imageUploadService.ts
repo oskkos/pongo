@@ -9,7 +9,7 @@ export async function uploadImage(file: File, apartmentSlug: string, type: 'apar
   if (!session?.user?.email) {
     throw new Error('Unauthorized');
   }
-  const userId = getUserIdFromSession();
+  const userId = await getUserIdFromSession();
   const imageBuffer = Buffer.from(await file.arrayBuffer());
   const uploadResult: cloudinary.UploadApiResponse | undefined = await new Promise((resolve) => {
     const folder =

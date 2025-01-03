@@ -26,7 +26,7 @@ export const metadata: Metadata = {
 const actions = [
   { path: '/apartments', label: i18n.Apartments, icon: <MdHouse size={24} />, disabled: false },
   { path: '/tenants', label: i18n.Tenants, icon: <MdPerson size={24} />, disabled: false },
-  { path: '/finance', label: i18n.Finance, icon: <MdAttachMoney size={24} />, disabled: true },
+  { path: '/finances', label: i18n.Finance, icon: <MdAttachMoney size={24} />, disabled: false },
 ] as const;
 
 async function AuthenticatedLayout({ session, children }: { session: Session; children: React.ReactNode }) {
