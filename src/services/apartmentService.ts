@@ -14,7 +14,7 @@ export function getApartmentBySlug(slug: string) {
   return apartmentRepository.getApartmentBySlug(slug);
 }
 async function setCoverPhoto(coverPhoto: File, slug: string, userId: string) {
-  const coverImageId = await uploadImage(coverPhoto, slug);
+  const coverImageId = await uploadImage(coverPhoto, slug, 'apartment');
   await apartmentRepository.updateApartment(slug, { coverImageId, userId });
 }
 async function streetAddressChanged(oldSlug: string, newStreetAddress: string) {

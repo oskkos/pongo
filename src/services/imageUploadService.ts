@@ -2,12 +2,21 @@ import 'server-only';
 
 import cloudinary from 'cloudinary';
 
-export async function uploadImage(file: File, slug: string) {
+import { auth, getUserIdFromSession } from '@/auth';
+
+export async function uploadImage(file: File, apartmentSlug: string, type: 'apartment' | 'receipt') {
+  const session = await auth();
+  if (!session?.user?.email) {
+    throw new Error('Unauthorized');
+  }
+  const userId = getUserIdFromSession();
   const imageBuffer = Buffer.from(await file.arrayBuffer());
   const uploadResult: cloudinary.UploadApiResponse | undefined = await new Promise((resolve) => {
+    const folder =
+      type === 'apartment' ? `pongo/${userId}/${apartmentSlug}` : `pongo/${userId}/${apartmentSlug}/receipts`;
     cloudinary.v2.uploader
       .upload_stream(
-        { folder: `pongo/${slug}`, unique_filename: true, resource_type: 'image', type: 'upload' },
+        { folder, unique_filename: true, resource_type: 'image', type: 'upload' },
         (error, uploadResult) => {
           if (error) {
             console.error(`Image upload error`, error);
