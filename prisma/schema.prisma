@@ -14,21 +14,21 @@ datasource db {
 }
 
 model Apartment {
-  id              String            @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  apartmentSize   Int               @map("apartment_size")
-  coverImageId    String?           @map("cover_image_id")
-  createdAt       DateTime          @default(now()) @map("created_at")
-  description     String?
-  financialRecord FinancialRecord[]
-  modifiedAt      DateTime          @updatedAt @map("modified_at")
-  postalCode      String            @map("postal_code")
-  postOffice      String            @map("post_office")
-  slug            String            @unique
-  streetAddress   String            @map("street_address")
-  tenants         Tenant[]
-  title           String?
-  user            User              @relation(fields: [userId], references: [id])
-  userId          String            @map("user_id") @db.Uuid
+  id               String            @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  apartmentSize    Int               @map("apartment_size")
+  coverImageId     String?           @map("cover_image_id")
+  createdAt        DateTime          @default(now()) @map("created_at")
+  description      String?
+  financialRecords FinancialRecord[]
+  modifiedAt       DateTime          @updatedAt @map("modified_at")
+  postalCode       String            @map("postal_code")
+  postOffice       String            @map("post_office")
+  slug             String            @unique
+  streetAddress    String            @map("street_address")
+  tenants          Tenant[]
+  title            String?
+  user             User              @relation(fields: [userId], references: [id])
+  userId           String            @map("user_id") @db.Uuid
 
   @@map("apartments")
 }

@@ -10,11 +10,15 @@ export default async function Apartments() {
       <div>
         <AddNewBtn label={i18n.AddNewApartment} path="/apartments/add" />
       </div>
-      <div className="inline-flex flex-wrap gap-4 items-center justify-center md:justify-start">
-        {apartments.map((apartment) => {
-          return <ApartmentCard key={apartment.id} apartment={apartment} />;
-        })}
-      </div>
+      {apartments.length ? (
+        <div className="inline-flex flex-wrap gap-4 items-center justify-center md:justify-start">
+          {apartments.map((apartment) => {
+            return <ApartmentCard key={apartment.id} apartment={apartment} />;
+          })}
+        </div>
+      ) : (
+        <h2 className="mt-4">{i18n.NoApartmentsAdded}</h2>
+      )}
     </main>
   );
 }

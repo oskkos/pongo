@@ -3,6 +3,7 @@ import Image from '@/components/image';
 import { i18n } from '@/lib/i18n';
 import { transformToSlug } from '@/lib/slugify';
 import { getApartmentBySlug } from '@/services/apartmentService';
+import { getFinancialRecordCategories } from '@/services/financeService';
 import ApartmentDetails from './apartmentDetails';
 import ApartmentTabs from './apartmentTabs';
 
@@ -11,6 +12,7 @@ export const dynamic = 'force-dynamic';
 export default async function Apartment({ params }: { params: Promise<{ slug: string }> }) {
   const userId = await getUserIdFromSession();
   const slug = transformToSlug((await params).slug);
+  const categories = await getFinancialRecordCategories();
   const apartment = await getApartmentBySlug(slug);
   if (!apartment) {
     return <div>{i18n.ApartmentNotFound}</div>;
@@ -31,7 +33,7 @@ export default async function Apartment({ params }: { params: Promise<{ slug: st
         />
         <ApartmentDetails apartment={apartment} userId={userId} />
       </div>
-      <ApartmentTabs tenants={apartment.tenants} />
+      <ApartmentTabs tenants={apartment.tenants} records={apartment.financialRecords} categories={categories} />
     </main>
   );
 }

@@ -22,6 +22,7 @@ export const i18n = {
   FirstName: 'First name',
   LastName: 'Last name',
   Name: 'Name',
+  NoApartmentsAdded: 'No apartments added yet',
   NoFinancialRecordsAdded: 'No financial records added yet',
   NoTenantsAdded: 'No tenants added yet',
   PersonId: 'Person ID',

@@ -1,25 +1,41 @@
 'use client';
 
-import { FinancialRecord } from '@prisma/client';
-import React, { useState } from 'react';
+import { FinancialRecord, FinancialRecordCategory } from '@prisma/client';
+import Link from 'next/link';
+import React, { useMemo, useState } from 'react';
+import { MdAttachFile } from 'react-icons/md';
 
 import Image from '@/components/image';
 import Modal, { showModal } from '@/components/modal';
 import { useSort } from '@/components/useSort';
 import { i18n } from '@/lib/i18n';
 
-type FinancialRecordType = FinancialRecord & { apartment?: { slug: string; streetAddress: string } } & {
-  category: { name: string; categoryType: string };
-};
+type FinancialRecordType = FinancialRecord & { apartment?: { slug: string; streetAddress: string } };
 type SortColumns = 'apartment' | 'amount' | 'category' | 'type' | 'description' | 'recordDate';
 
-const getters = new Map<SortColumns, (record: FinancialRecordType) => string>([
-  ['apartment', (record: FinancialRecordType) => record.apartment?.streetAddress ?? '-'],
-  ['category', (record: FinancialRecordType) => record.category.name],
-  ['type', (record: FinancialRecordType) => record.category.categoryType],
-]);
+export default function FinancialRecordTable({
+  records,
+  categories,
+}: {
+  records: FinancialRecordType[];
+  categories: FinancialRecordCategory[];
+}) {
+  const [categoryMap, getters] = useMemo(() => {
+    const categoryMap = new Map(categories.map((category) => [category.id, category]));
+    const getters = new Map<SortColumns, (record: FinancialRecordType) => string>([
+      ['apartment', (record: FinancialRecordType) => record.apartment?.streetAddress ?? '-'],
+      [
+        'category',
+        (record: FinancialRecordType) => {
+          console.log('category');
+          return categoryMap.get(record.categoryId)?.name ?? '-';
+        },
+      ],
+      ['type', (record: FinancialRecordType) => categoryMap.get(record.categoryId)?.categoryType ?? '-'],
+    ]);
+    return [categoryMap, getters] as const;
+  }, [categories]);
 
-export default function FinancialRecordTable({ records }: { records: FinancialRecordType[] }) {
   const {
     sortedData: sortedFinancialRecords,
     updateSort,
@@ -27,15 +43,19 @@ export default function FinancialRecordTable({ records }: { records: FinancialRe
   } = useSort<FinancialRecordType, SortColumns>({ property: 'recordDate', direction: 'desc' }, records, getters);
 
   const [modalContent, setModalContent] = useState<React.ReactNode | null>(null);
+
+  const renderApartmentCell = sortedFinancialRecords.some((record) => record.apartment);
   return (
     <div className="overflow-x-auto max-h-content">
       <table className="table table-pin-rows table-xs md:table-sm xl:table-md">
         <thead>
           <tr>
-            <th className="cursor-pointer" onClick={() => updateSort('apartment')}>
-              {i18n.Apartment}
-              {sortIcon('apartment')}
-            </th>
+            {renderApartmentCell && (
+              <th className="cursor-pointer" onClick={() => updateSort('apartment')}>
+                {i18n.Apartment}
+                {sortIcon('apartment')}
+              </th>
+            )}
             <th className="cursor-pointer" onClick={() => updateSort('amount')}>
               {i18n.Amount}
               {sortIcon('amount')}
@@ -60,26 +80,36 @@ export default function FinancialRecordTable({ records }: { records: FinancialRe
           </tr>
         </thead>
         <tbody>
-          {sortedFinancialRecords.map((financialrecord) => {
+          {sortedFinancialRecords.map((record) => {
             return (
-              <tr key={financialrecord.id}>
-                <td>{financialrecord.apartment?.streetAddress}</td>
-                <td>{financialrecord.amount} €</td>
-                <td>{financialrecord.description}</td>
-                <td>{financialrecord.category.name}</td>
-                <td>{financialrecord.category.categoryType}</td>
-                <td>{financialrecord.recordDate.toLocaleDateString()}</td>
+              <tr key={record.id}>
+                {renderApartmentCell && (
+                  <td>
+                    <Link href={`/apartments/${record.apartment?.slug}`}>{record.apartment?.streetAddress}</Link>
+                  </td>
+                )}
+                <td className="!py-0">
+                  <div
+                    className={` w-24 p-3 m-0 badge ${categoryMap.get(record.categoryId)?.categoryType === 'EXPENSE' ? 'badge-error' : 'badge-success'}`}
+                  >
+                    {record.amount} €
+                  </div>
+                </td>
+                <td>{record.description}</td>
+                <td>{categoryMap.get(record.categoryId)?.name ?? '-'}</td>
+                <td>{categoryMap.get(record.categoryId)?.categoryType ?? '-'}</td>
+                <td>{record.recordDate.toLocaleDateString()}</td>
                 <td>
-                  {financialrecord.attachmentId && (
+                  {record.attachmentId && (
                     <span
                       onClick={() => {
                         setModalContent(
-                          <Image src={financialrecord.attachmentId!} alt={i18n.Attachment} width={1920} height={1920} />
+                          <Image src={record.attachmentId!} alt={i18n.Attachment} width={1920} height={1920} />
                         );
                         showModal('financialRecordAttachmentModal');
                       }}
                     >
-                      klik
+                      <MdAttachFile size={24} />
                     </span>
                   )}
                 </td>

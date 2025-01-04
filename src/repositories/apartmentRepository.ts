@@ -16,7 +16,7 @@ export async function getApartmentBySlug(slug: string) {
   const userId = await getUserIdFromSession();
   return prisma.apartment.findUnique({
     where: { slug, userId },
-    include: { tenants: true },
+    include: { tenants: true, financialRecords: true },
   });
 }
 export async function getApartmentById(id: string) {

@@ -1,10 +1,11 @@
 import AddNewBtn from '@/components/addNewBtn';
 import { i18n } from '@/lib/i18n';
-import { getAllFinancialRecords } from '@/services/financeService';
+import { getAllFinancialRecords, getFinancialRecordCategories } from '@/services/financeService';
 import FinancialRecordTable from './financialRecordTable';
 
 export default async function finances() {
   const records = await getAllFinancialRecords();
+  const categories = await getFinancialRecordCategories();
   return (
     <main>
       <div>
@@ -12,7 +13,7 @@ export default async function finances() {
       </div>
       {records.length ? (
         <div>
-          <FinancialRecordTable records={records} />
+          <FinancialRecordTable records={records} categories={categories} />
         </div>
       ) : (
         <h2 className="mt-4">{i18n.NoFinancialRecordsAdded}</h2>

@@ -1,6 +1,7 @@
-import { Tenant } from '@prisma/client';
+import { FinancialRecord, FinancialRecordCategory, Tenant } from '@prisma/client';
 import { JSX } from 'react';
 
+import FinancialRecordTable from '@/app/finances/financialRecordTable';
 import TenantTable from '@/app/tenants/tenantTable';
 import { i18n } from '@/lib/i18n';
 
@@ -40,7 +41,15 @@ export function Tab({
   );
 }
 
-export default function ApartmentTabs({ tenants }: { tenants: Tenant[] }) {
+export default function ApartmentTabs({
+  tenants,
+  categories,
+  records,
+}: {
+  tenants: Tenant[];
+  records: FinancialRecord[];
+  categories: FinancialRecordCategory[];
+}) {
   return (
     <TabBar>
       <Tab label={i18n.Tenants} selected>
@@ -48,8 +57,10 @@ export default function ApartmentTabs({ tenants }: { tenants: Tenant[] }) {
           <TenantTable tenants={tenants} />
         </div>
       </Tab>
-      <Tab label={i18n.Finance} disabled>
-        Finance content
+      <Tab label={i18n.Finance}>
+        <div className="w-full max-w-[100vw] p-4">
+          <FinancialRecordTable records={records} categories={categories} />
+        </div>
       </Tab>
     </TabBar>
   );
