@@ -2,58 +2,24 @@
 
 import { Tenant } from '@prisma/client';
 import Link from 'next/link';
-import { SetStateAction, useEffect, useState } from 'react';
 
+import { useSort } from '@/components/useSort';
 import { i18n } from '@/lib/i18n';
 
 type TenantType = Tenant & { apartment?: { slug: string; streetAddress: string } };
-interface SortType {
-  property: 'name' | 'email' | 'phoneNumber' | 'streetAddress' | 'tenantFrom' | 'tenantTo';
-  direction: 'asc' | 'desc';
-}
+type SortColumns = 'name' | 'email' | 'phoneNumber' | 'streetAddress' | 'tenantFrom' | 'tenantTo';
 
-function updateSort(property: SortType['property'], setSort: (value: SetStateAction<SortType>) => void) {
-  setSort((prev) => {
-    if (prev.property === property) {
-      return { property, direction: prev.direction === 'asc' ? 'desc' : 'asc' };
-    }
-    return { property, direction: 'asc' };
-  });
-}
-function sortTenants(tenants: TenantType[], sort: SortType) {
-  tenants.sort((a, b) => {
-    const property = sort.property;
-
-    let aValue;
-    let bValue;
-    if (property === 'name') {
-      aValue = a.lastName + a.firstName;
-      bValue = b.lastName + b.firstName;
-    } else if (property === 'streetAddress') {
-      aValue = a.apartment?.streetAddress ?? '';
-      bValue = b.apartment?.streetAddress ?? '';
-    } else {
-      aValue = a[property] ?? '';
-      bValue = b[property] ?? '';
-    }
-    if (aValue < bValue) {
-      return sort.direction === 'asc' ? -1 : 1;
-    }
-    if (aValue > bValue) {
-      return sort.direction === 'asc' ? 1 : -1;
-    }
-    return 0;
-  });
-}
+const getters = new Map<SortColumns, (tenant: TenantType) => string>([
+  ['name', (tenant) => tenant.lastName + tenant.firstName],
+  ['streetAddress', (tenant) => tenant.apartment?.streetAddress ?? '-'],
+]);
 
 export default function TenantTable({ tenants }: { tenants: TenantType[] }) {
-  const [sort, setSort] = useState({ property: 'tenantFrom', direction: 'desc' } as SortType);
-  const [sortedTenants, setSortedTenants] = useState<TenantType[]>(tenants);
-
-  useEffect(() => {
-    sortTenants(tenants, sort);
-    setSortedTenants([...tenants]);
-  }, [sort, tenants]);
+  const {
+    sortedData: sortedTenants,
+    updateSort,
+    sortIcon,
+  } = useSort<TenantType, SortColumns>({ property: 'tenantFrom', direction: 'desc' }, tenants, getters);
 
   const renderApartmentCell = tenants.some((tenant) => tenant.apartment);
   return (
@@ -61,25 +27,31 @@ export default function TenantTable({ tenants }: { tenants: TenantType[] }) {
       <table className="table table-pin-rows table-xs md:table-sm xl:table-md">
         <thead>
           <tr>
-            <th className="cursor-pointer" onClick={() => updateSort('name', setSort)}>
+            <th className="cursor-pointer" onClick={() => updateSort('name')}>
               {i18n.Name}
+              {sortIcon('name')}
             </th>
-            <th className="cursor-pointer" onClick={() => updateSort('email', setSort)}>
+            <th className="cursor-pointer" onClick={() => updateSort('email')}>
               {i18n.Email}
+              {sortIcon('email')}
             </th>
-            <th className="cursor-pointer" onClick={() => updateSort('phoneNumber', setSort)}>
+            <th className="cursor-pointer" onClick={() => updateSort('phoneNumber')}>
               {i18n.PhoneNumber}
+              {sortIcon('phoneNumber')}
             </th>
             {renderApartmentCell && (
-              <th className="cursor-pointer" onClick={() => updateSort('streetAddress', setSort)}>
+              <th className="cursor-pointer" onClick={() => updateSort('streetAddress')}>
                 {i18n.Apartment}
+                {sortIcon('streetAddress')}
               </th>
             )}
-            <th className="cursor-pointer" onClick={() => updateSort('tenantFrom', setSort)}>
+            <th className="cursor-pointer" onClick={() => updateSort('tenantFrom')}>
               {i18n.TenantFrom}
+              {sortIcon('tenantFrom')}
             </th>
-            <th className="cursor-pointer" onClick={() => updateSort('tenantTo', setSort)}>
+            <th className="cursor-pointer" onClick={() => updateSort('tenantTo')}>
               {i18n.TenantTo}
+              {sortIcon('tenantTo')}
             </th>
           </tr>
         </thead>

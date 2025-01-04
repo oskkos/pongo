@@ -12,6 +12,7 @@ export const i18n = {
   Apartments: 'Apartments',
   ApartmentSize: 'Apartment size',
   Attachment: 'Attachment',
+  Category: 'Category',
   CoverPhoto: 'Cover photo',
   Description: 'Description',
   Email: 'Email',
@@ -21,6 +22,7 @@ export const i18n = {
   FirstName: 'First name',
   LastName: 'Last name',
   Name: 'Name',
+  NoFinancialRecordsAdded: 'No financial records added yet',
   NoTenantsAdded: 'No tenants added yet',
   PersonId: 'Person ID',
   PhoneNumber: 'Phone number',
@@ -35,4 +37,5 @@ export const i18n = {
   Tenants: 'Tenants',
   TenantTo: 'Tenant to',
   Title: 'Title',
+  Type: 'Type',
 };

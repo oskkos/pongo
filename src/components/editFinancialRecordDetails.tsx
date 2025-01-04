@@ -48,9 +48,11 @@ export default function EditFinancialRecordDetails({
   }
 
   const apartmentOptions = apartments.map((apartment) => ({ value: apartment.id, label: apartment.streetAddress }));
-  const categoryOptions = categories
-    .filter((category) => category.categoryType === (recordIsExpence ? 'EXPENSE' : 'INCOME'))
-    .map((category) => ({ value: category.id, label: category.name, title: category.description }));
+  const categoryOptions = [{ value: '', label: '' }].concat(
+    categories
+      .filter((category) => category.categoryType === (recordIsExpence ? 'EXPENSE' : 'INCOME'))
+      .map((category) => ({ value: category.id, label: category.name, title: category.description }))
+  );
 
   return (
     <div className="flex flex-col justify-center items-center">

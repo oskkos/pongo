@@ -33,3 +33,15 @@ export async function updateFinancialRecord(data: { id: string; apartmentId: str
     data,
   });
 }
+
+export async function getAllFinancialRecords() {
+  const userId = await getUserIdFromSession();
+  return prisma.financialRecord.findMany({
+    where: { apartment: { userId } },
+    orderBy: { recordDate: 'desc' },
+    include: {
+      apartment: { select: { streetAddress: true, slug: true } },
+      category: { select: { name: true, categoryType: true } },
+    },
+  });
+}

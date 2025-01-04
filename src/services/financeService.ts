@@ -37,3 +37,7 @@ export async function editFinancialRecord(data: EditFinancialRecordData) {
   }
   return financialRecord;
 }
+
+export async function getAllFinancialRecords() {
+  return financeRepository.getAllFinancialRecords();
+}
