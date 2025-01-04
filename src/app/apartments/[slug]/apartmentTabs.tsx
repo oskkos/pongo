@@ -55,12 +55,12 @@ export default function ApartmentTabs({
   return (
     <TabBar>
       <Tab label={i18n.Tenants} selected>
-        <div className="w-full max-w-[100vw] p-4">
+        <div className="w-full max-w-[100vw]">
           <TenantTable tenants={tenants} />
         </div>
       </Tab>
       <Tab label={i18n.Finance}>
-        <div className="w-full max-w-[100vw] p-4">
+        <div className="w-full max-w-[100vw]">
           <FinancialRecordTable apartments={apartments} records={records} categories={categories} />
         </div>
       </Tab>

@@ -9,6 +9,9 @@ const config = {
       height: {
         content: 'calc(100dvh - 4rem)',
       },
+      maxHeight: {
+        content: 'calc(100dvh - 4rem)',
+      },
     },
   },
   plugins: [daisyui],
