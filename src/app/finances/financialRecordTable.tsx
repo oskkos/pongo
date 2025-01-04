@@ -3,10 +3,11 @@
 import { FinancialRecord, FinancialRecordCategory } from '@prisma/client';
 import Link from 'next/link';
 import React, { useMemo, useState } from 'react';
-import { MdAttachFile } from 'react-icons/md';
+import { MdAttachFile, MdContentCopy, MdEdit } from 'react-icons/md';
 
+import EditFinancialRecordDetails from '@/components/editFinancialRecordDetails';
 import Image from '@/components/image';
-import Modal, { showModal } from '@/components/modal';
+import Modal, { hideModal, showModal } from '@/components/modal';
 import { useSort } from '@/components/useSort';
 import { i18n } from '@/lib/i18n';
 
@@ -14,9 +15,11 @@ type FinancialRecordType = FinancialRecord & { apartment?: { slug: string; stree
 type SortColumns = 'apartment' | 'amount' | 'category' | 'type' | 'description' | 'recordDate';
 
 export default function FinancialRecordTable({
+  apartments,
   records,
   categories,
 }: {
+  apartments: { id: string; streetAddress: string }[];
   records: FinancialRecordType[];
   categories: FinancialRecordCategory[];
 }) {
@@ -77,6 +80,8 @@ export default function FinancialRecordTable({
               {sortIcon('recordDate')}
             </th>
             <th>{i18n.Attachment}</th>
+            <th className="w-8"></th>
+            <th className="w-8"></th>
           </tr>
         </thead>
         <tbody>
@@ -106,19 +111,52 @@ export default function FinancialRecordTable({
                         setModalContent(
                           <Image src={record.attachmentId!} alt={i18n.Attachment} width={1920} height={1920} />
                         );
-                        showModal('financialRecordAttachmentModal');
+                        showModal('financialRecordModal');
                       }}
                     >
                       <MdAttachFile size={24} />
                     </span>
                   )}
                 </td>
+                <td className="!p-0">
+                  <MdEdit
+                    size={24}
+                    onClick={() => {
+                      setModalContent(
+                        <EditFinancialRecordDetails
+                          apartments={apartments}
+                          financialRecord={record}
+                          categories={categories}
+                          onAfterSubmit={() => hideModal('financialRecordModal')}
+                        />
+                      );
+                      showModal('financialRecordModal');
+                    }}
+                  />
+                </td>
+                <td className="!p-0">
+                  <MdContentCopy
+                    size={24}
+                    onClick={() => {
+                      const recordCopy = { ...record, id: '' };
+                      setModalContent(
+                        <EditFinancialRecordDetails
+                          apartments={apartments}
+                          financialRecord={recordCopy}
+                          categories={categories}
+                          onAfterSubmit={() => hideModal('financialRecordModal')}
+                        />
+                      );
+                      showModal('financialRecordModal');
+                    }}
+                  />
+                </td>
               </tr>
             );
           })}
         </tbody>
       </table>
-      <Modal id="financialRecordAttachmentModal" onClose={() => setModalContent(null)}>
+      <Modal id="financialRecordModal" onClose={() => setModalContent(null)}>
         {modalContent}
       </Modal>
     </div>

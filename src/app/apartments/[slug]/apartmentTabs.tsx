@@ -42,10 +42,12 @@ export function Tab({
 }
 
 export default function ApartmentTabs({
+  apartments,
   tenants,
   categories,
   records,
 }: {
+  apartments: { id: string; streetAddress: string }[];
   tenants: Tenant[];
   records: FinancialRecord[];
   categories: FinancialRecordCategory[];
@@ -59,7 +61,7 @@ export default function ApartmentTabs({
       </Tab>
       <Tab label={i18n.Finance}>
         <div className="w-full max-w-[100vw] p-4">
-          <FinancialRecordTable records={records} categories={categories} />
+          <FinancialRecordTable apartments={apartments} records={records} categories={categories} />
         </div>
       </Tab>
     </TabBar>

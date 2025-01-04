@@ -38,7 +38,8 @@ export default function EditFinancialRecordDetails({
   });
 
   const [toast, setToast] = useToast();
-  const [recordIsExpence, setRecordIsExpence] = useState(true);
+  const category = categories.find((category) => category.id === financialRecord?.categoryId);
+  const [recordIsExpence, setRecordIsExpence] = useState(category?.categoryType === 'EXPENSE' || !category);
 
   if (!apartments.length) {
     return <h2 className="mt-4">{i18n.AddApartmentPriorFinancialRecord}</h2>;
@@ -105,6 +106,7 @@ export default function EditFinancialRecordDetails({
           value={financialRecord?.amount ?? ''}
           error={errors.amount}
           type="number"
+          step="0.01"
         />
         <Textarea
           label={i18n.Description}

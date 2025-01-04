@@ -10,6 +10,7 @@ export default function Input<T extends FieldValues>({
   error,
   className,
   value,
+  step,
 }: {
   label: string;
   name: Path<T>;
@@ -18,6 +19,7 @@ export default function Input<T extends FieldValues>({
   error?: FieldError;
   className?: string;
   value?: string | number | Date;
+  step?: string;
 }) {
   return (
     <>
@@ -28,6 +30,7 @@ export default function Input<T extends FieldValues>({
         type={type ?? 'text'}
         className={`${className ?? 'input input-bordered w-full max-w-xs'}`}
         defaultValue={value instanceof Date ? value.toISOString() : value}
+        step={step}
       />
       <FormFieldError error={error} />
     </>
