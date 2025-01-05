@@ -55,7 +55,9 @@ export default function FinancialRecordTable({
         className="m-4"
         size={24}
         onClick={() => {
-          setModalContent(<FinancialCalculations records={sortedFinancialRecords} categories={categories} />);
+          setModalContent(
+            <FinancialCalculations apartments={apartments} records={sortedFinancialRecords} categories={categories} />
+          );
           showModal('financialRecordModal');
         }}
       />

@@ -12,8 +12,8 @@ export default function Modal({
   children: JSX.Element | JSX.Element[] | React.ReactNode | string;
 }) {
   return (
-    <dialog id={id} className="modal" onClose={onClose}>
-      <div className="modal-box max-w-7xl">
+    <dialog id={id} className="modal modal-bottom sm:modal-middle" onClose={onClose}>
+      <div className="modal-box !max-w-7xl">
         <form method="dialog">
           <button className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
         </form>
